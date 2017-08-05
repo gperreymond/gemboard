@@ -1,3 +1,8 @@
+require('pixi.js/dist/pixi.min.js')
+const Container = window.PIXI.Container
+const Sprite = window.PIXI.Sprite
+const Graphics = window.PIXI.Graphics
+
 class Match3 {
   constructor (options, context) {
     this._options = options
@@ -5,8 +10,42 @@ class Match3 {
     this.clusters = []    // { column, row, length, horizontal }
     this.moves = []       // { column1, row1, column2, row2 }
   }
+  initialize () {
+    this._container = new Container()
+    this._container.x = 0
+    this._container.y = 0
+    this._container.width = 800
+    this._container.height = 800
+    this.createLevel()
+    this.findMoves()
+    this.findClusters()
+    for (let x = 0; x < 8; x++) {
+      for (let y = 0; y < 8; y++) {
+        let tile = this.tiles[x][y]
+        let circle = new Graphics()
+        circle.lineStyle(0)
+        circle.beginFill(tile.color, 1)
+        circle.drawCircle(0, 0, 40)
+        circle.endFill()
+        circle.x = x * 100 + 50
+        circle.y = y * 100 + 50
+        if (tile.sprite) {
+          let texture = this._context.state.game.resources[tile.sprite].texture
+          let sprite = new Sprite(texture)
+          sprite.alpha = 0.5
+          sprite.width = 80
+          sprite.height = 80
+          sprite.anchor.set(0.5, 0.5)
+          circle.addChild(sprite)
+        }
+        this._container.addChild(circle)
+      }
+    }
+  }
+  getContainer () {
+    return this._container
+  }
   createLevel () {
-    console.log('createLevel')
     let done = false
     this.tiles = []
     // Keep generating levels until it is correct
@@ -66,7 +105,6 @@ class Match3 {
   Remove the clusters
   **/
   removeClusters () {
-    console.log('removeClusters')
     // Change the type of the tiles to -1, indicating a removed tile
     this.loopClusters((index, column, row, cluster) => { this.tiles[column][row].type = -1 })
     // Calculate how much a tile should be shifted downwards
@@ -89,7 +127,6 @@ class Match3 {
   Loop over the cluster tiles and execute a function
   **/
   loopClusters (func) {
-    console.log('loopClusters')
     for (let i = 0; i < this.clusters.length; i++) {
       //  { column, row, length, horizontal }
       let cluster = this.clusters[i]
@@ -132,7 +169,6 @@ class Match3 {
   Find clusters in the level
   **/
   findClusters () {
-    console.log('findClusters')
     // Reset clusters
     this.clusters = []
     // Find horizontal clusters
@@ -198,7 +234,6 @@ class Match3 {
   Find available moves
   **/
   findMoves () {
-    console.log('findMoves')
     // Reset moves
     this.moves = []
     // Check horizontal swaps

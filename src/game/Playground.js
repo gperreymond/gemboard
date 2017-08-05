@@ -22,6 +22,7 @@ class Playground {
         tileName === TILE_A ? tileName = TILE_B : tileName = TILE_A
         let texture = this._context.state.game.resources[tileName].texture
         let sprite = new Sprite(texture)
+        sprite.alpha = 0.5
         sprite.width = 100
         sprite.height = 100
         sprite.x = x * 100 * this._options.size

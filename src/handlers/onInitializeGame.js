@@ -10,8 +10,6 @@ require('pixi.js/dist/pixi.min.js')
 const autoDetectRenderer = window.PIXI.autoDetectRenderer
 const loader = window.PIXI.loader
 const Container = window.PIXI.Container
-const Graphics = window.PIXI.Graphics
-const Sprite = window.PIXI.Sprite
 
 const handler = (context) => {
   debug('handler')
@@ -50,32 +48,9 @@ const handler = (context) => {
     stage.addChild(playground.getContainer())
     // initialize match3 content
     let match3 = new Match3({rows: 8, cols: 8}, context)
-    match3.createLevel()
-    match3.findMoves()
-    match3.findClusters()
-    for (let x = 0; x < 8; x++) {
-      for (let y = 0; y < 8; y++) {
-        let tile = match3.tiles[x][y]
-        let circle = new Graphics()
-        circle.lineStyle(0)
-        circle.beginFill(tile.color, 1)
-        circle.drawCircle(0, 0, 40)
-        circle.endFill()
-        circle.x = x * 100 + 50
-        circle.y = y * 100 + 50
-        if (tile.sprite) {
-          let texture = context.state.game.resources[tile.sprite].texture
-          let sprite = new Sprite(texture)
-          sprite.alpha = 0.5
-          sprite.width = 80
-          sprite.height = 80
-          sprite.anchor.set(0.5, 0.5)
-          circle.addChild(sprite)
-        }
-        stage.addChild(circle)
-      }
-    }
-    console.log(match3.moves)
+    match3.initialize()
+    stage.addChild(match3.getContainer())
+    debug('match3 initialize, mooves %o', match3.moves)
     //
     Actions.initializeComplete()
   })
