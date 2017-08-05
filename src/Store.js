@@ -16,14 +16,15 @@ class Store extends Reflux.Store {
         value: 0
       },
       options: {
-        contentWidth: 1024,
-        contentHeight: 768
+        contentWidth: 800,
+        contentHeight: 800
       },
       data: null,
       game: {
         renderer: null,
         stage: null,
-        ressources: null
+        ressources: null,
+        match3: null
       }
     }
     debug('constructor')
@@ -31,6 +32,7 @@ class Store extends Reflux.Store {
     this.handlers = new Handlers()
   }
   onInitialize () { this.handlers.onInitialize(this) }
+  onInitializeGame () { this.handlers.onInitializeGame(this) }
   onInitializeComplete () { this.handlers.onInitializeComplete(this) }
 }
 

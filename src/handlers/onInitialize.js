@@ -23,7 +23,7 @@ const handler = (context) => {
     if (response.statusCode === 200) {
       debug('data loaded %o', body)
       context.setState({data: body})
-      Actions.initializeComplete()
+      Actions.initializeGame()
     }
   })
 }

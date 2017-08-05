@@ -8,7 +8,7 @@ import Debug from 'debug'
 import Store from './../Store'
 import Actions from './../Actions'
 
-const debug = Debug('warboard-game:boardgame')
+const debug = Debug('gemboard-game:boardgame')
 
 class Game extends Reflux.Component {
   constructor (props) {
