@@ -1,14 +1,19 @@
+// import findIndex from 'lodash.findindex'
+import clone from 'lodash.clone'
+
+import GemButton from './GemButton'
+
 require('pixi.js/dist/pixi.min.js')
 const Container = window.PIXI.Container
-const Sprite = window.PIXI.Sprite
-const Graphics = window.PIXI.Graphics
 
 class Match3 {
   constructor (options, context) {
     this._options = options
     this._context = context
+    this.tiles = []
     this.clusters = []    // { column, row, length, horizontal }
     this.moves = []       // { column1, row1, column2, row2 }
+    this.animations = false
   }
   initialize () {
     this._container = new Container()
@@ -21,33 +26,72 @@ class Match3 {
     this.findClusters()
     for (let x = 0; x < 8; x++) {
       for (let y = 0; y < 8; y++) {
-        let tile = this.tiles[x][y]
-        let circle = new Graphics()
-        circle.lineStyle(0)
-        circle.beginFill(tile.color, 1)
-        circle.drawCircle(0, 0, 40)
-        circle.endFill()
-        circle.x = x * 100 + 50
-        circle.y = y * 100 + 50
-        if (tile.sprite) {
-          let texture = this._context.state.game.resources[tile.sprite].texture
-          let sprite = new Sprite(texture)
-          sprite.alpha = 0.5
-          sprite.width = 80
-          sprite.height = 80
-          sprite.anchor.set(0.5, 0.5)
-          circle.addChild(sprite)
-        }
-        this._container.addChild(circle)
+        let gem = this.tiles[x][y].gem
+        gem.x = x
+        gem.y = y
+        gem.move()
+        gem.getContainer().on('pointerdown', () => {
+          if (this.clusters.length !== 0) return false
+          this._context.state.game.selectedGem = gem
+          gem.select()
+        })
+        gem.getContainer().on('pointerup', () => {
+          if (this._context.state.game.selectedGem === null) return false
+          if (gem.isDown() === true) {
+            this._context.state.game.selectedGem = null
+            gem.unselect()
+          } else {
+            let canSwap = this.canSwap(gem.x, gem.y, this._context.state.game.selectedGem.x, this._context.state.game.selectedGem.y)
+            if (canSwap === false) {
+              this._context.state.game.selectedGem.unselect()
+              this._context.state.game.selectedGem = null
+            } else {
+              // time to check the move
+              this.swap(gem.x, gem.y, this._context.state.game.selectedGem.x, this._context.state.game.selectedGem.y)
+              this.findClusters()
+              if (this.clusters.length === 0) {
+                console.log('unauthorized move')
+                // move back
+                this.swap(this._context.state.game.selectedGem.x, this._context.state.game.selectedGem.y, gem.x, gem.y)
+                this._context.state.game.selectedGem.unselect()
+                this._context.state.game.selectedGem = null
+              } else {
+                console.log('valid move')
+                let source = gem
+                let target = this._context.state.game.selectedGem
+                let sx = source.x
+                let sy = source.y
+                source.x = target.x
+                source.y = target.y
+                target.x = sx
+                target.y = sy
+                source.move()
+                target.move()
+                // end move
+                source.unselect()
+                target.unselect()
+                this._context.state.game.selectedGem = null
+              }
+            }
+          }
+        })
+        this._container.addChild(gem.getContainer())
       }
     }
+  }
+  addAnimationExplode (col, row) {
+    this.animations[this.animations.length - 1].push({
+      col,
+      row,
+      type: 'explode',
+      tile: this.tiles[col][row]
+    })
   }
   getContainer () {
     return this._container
   }
   createLevel () {
     let done = false
-    this.tiles = []
     // Keep generating levels until it is correct
     while (!done) {
       // Create a level with random tiles
@@ -68,14 +112,28 @@ class Match3 {
     }
   }
   getRandomTile () {
-    let tilecolors = [0x2d4783, 0xc93402, 0x369dba, 0x9d5012, 0x71af4a, 0x555555, 0x953289]
-    let tilename = ['gemWater', 'gemFire', 'gemAir', 'gemEarth', 'gemNature', 'gemDeath', 'gemMagic']
+    let tilecolors = [0x2d4783, 0x990000, 0x369dba, 0x9d5012, 0x71af4a, 0x878c87, 0x953289]
+    let tilenames = ['gemWater', 'gemFire', 'gemAir', 'gemEarth', 'gemNature', 'gemDeath', 'gemMagic']
     let type = Math.floor(Math.random() * tilecolors.length)
     return {
       type,
+      name: tilenames[type],
       color: tilecolors[type],
-      sprite: tilename[type] || false
+      gem: new GemButton({
+        color: tilecolors[type],
+        texture: this._context.state.game.resources[tilenames[type]].texture
+      })
     }
+  }
+  /**
+  Check if two tiles can be swapped
+  **/
+  canSwap (x1, y1, x2, y2) {
+    // Check if the tile is a direct neighbor of the selected tile
+    if ((Math.abs(x1 - x2) === 1 && y1 === y2) || (Math.abs(y1 - y2) === 1 && x1 === x2)) {
+      return true
+    }
+    return false
   }
   /**
   Swap two tiles in the level
@@ -89,6 +147,7 @@ class Match3 {
   Remove clusters and insert tiles
   **/
   resolveClusters () {
+    console.log('resolveClusters')
     // Check for clusters
     this.findClusters()
     // While there are clusters left
@@ -105,8 +164,13 @@ class Match3 {
   Remove the clusters
   **/
   removeClusters () {
+    console.log('removeClusters')
+    if (this.animations !== false) this.animations.push([])
     // Change the type of the tiles to -1, indicating a removed tile
-    this.loopClusters((index, column, row, cluster) => { this.tiles[column][row].type = -1 })
+    this.loopClusters((index, col, row, cluster) => {
+      this.tiles[col][row].type = -1
+      if (this.animations !== false) this.addAnimationExplode(col, row)
+    })
     // Calculate how much a tile should be shifted downwards
     for (let i = 0; i < this._options.cols; i++) {
       let shift = 0

@@ -31,26 +31,26 @@ const handler = (context) => {
   })
   loader.load((loader, resources) => {
     debug('load is complete')
+    context.state.game.resources = resources
     // calculate game screen ration
     let ratio = Math.min(window.innerWidth / context.state.options.contentWidth, window.innerHeight / context.state.options.contentHeight)
     debug('screen radio %s', ratio)
     // setup PIXI Canvas in componentDidMount
-    let renderer = autoDetectRenderer(context.state.options.contentWidth * ratio, context.state.options.contentHeight * ratio, {antialias: true, transparent: false, resolution: 1})
+    context.state.game.renderer = autoDetectRenderer(context.state.options.contentWidth * ratio, context.state.options.contentHeight * ratio, {antialias: true, transparent: false, resolution: 1})
     // create the root of the scene graph
-    let stage = new Container()
-    stage.scale.x = ratio
-    stage.scale.y = ratio
-    debug('game size %s x %s', renderer.width, renderer.height)
-    context.setState({game: {renderer, stage, resources}})
+    context.state.game.stage = new Container()
+    context.state.game.stage.scale.x = ratio
+    context.state.game.stage.scale.y = ratio
+    debug('game size %s x %s', context.state.game.renderer.width, context.state.game.renderer.height)
     // initialize match3 container
     let playground = new Playground({size: 4}, context)
     playground.initialize()
-    stage.addChild(playground.getContainer())
+    context.state.game.stage.addChild(playground.getContainer())
     // initialize match3 content
-    let match3 = new Match3({rows: 8, cols: 8}, context)
-    match3.initialize()
-    stage.addChild(match3.getContainer())
-    debug('match3 initialize, mooves %o', match3.moves)
+    context.state.game.match3 = new Match3({rows: 8, cols: 8}, context)
+    context.state.game.match3.initialize()
+    context.state.game.stage.addChild(context.state.game.match3.getContainer())
+    debug('moves %s', context.state.game.match3.moves.length)
     //
     Actions.initializeComplete()
   })

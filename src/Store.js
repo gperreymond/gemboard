@@ -23,8 +23,9 @@ class Store extends Reflux.Store {
       game: {
         renderer: null,
         stage: null,
-        ressources: null,
-        match3: null
+        resources: null,
+        match3: null,
+        selectedGem: null
       }
     }
     debug('constructor')
