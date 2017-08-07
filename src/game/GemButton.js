@@ -32,6 +32,10 @@ class GemButton {
     this._container.buttonMode = true
     this._isDown = false
   }
+  explode () {
+    this._container.scale.x = 0
+    this._container.scale.y = 0
+  }
   move () {
     this._container.x = this.x * 100 + 50
     this._container.y = this.y * 100 + 50

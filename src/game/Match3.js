@@ -1,5 +1,5 @@
 // import findIndex from 'lodash.findindex'
-import clone from 'lodash.clone'
+// import clone from 'lodash.clone'
 
 import GemButton from './GemButton'
 
@@ -71,6 +71,27 @@ class Match3 {
                 source.unselect()
                 target.unselect()
                 this._context.state.game.selectedGem = null
+                // resolve animations
+                this.animations = []
+                this.resolveClusters()
+                console.log('animations')
+                this.animations.map(animations => {
+                  console.log('... block')
+                  animations.map(animation => {
+                    console.log('...... animation', animation)
+                    switch (animation.type) {
+                      case '1explode':
+                        animation.tile.gem.explode()
+                        break
+                      case '2move':
+                        animation.tile.gem.y = animation.row + animation.shift
+                        animation.tile.gem.move()
+                        break
+                      case '3create':
+                        break
+                    }
+                  })
+                })
               }
             }
           }
@@ -83,7 +104,24 @@ class Match3 {
     this.animations[this.animations.length - 1].push({
       col,
       row,
-      type: 'explode',
+      type: '1explode',
+      tile: this.tiles[col][row]
+    })
+  }
+  addAnimationCreate (col, row) {
+    this.animations[this.animations.length - 1].push({
+      col,
+      row,
+      type: '3create',
+      tile: this.tiles[col][row]
+    })
+  }
+  addAnimationMove (col, row, shift) {
+    this.animations[this.animations.length - 1].push({
+      col,
+      row,
+      type: '2move',
+      shift,
       tile: this.tiles[col][row]
     })
   }
@@ -217,10 +255,12 @@ class Match3 {
         if (this.tiles[i][j].type === -1) {
           // Insert new random tile
           this.tiles[i][j] = this.getRandomTile()
+          if (this.animations !== false) this.addAnimationCreate(i, j)
         } else {
           // Swap tile to shift it
           let shift = this.tiles[i][j].shift
           if (shift > 0) {
+            if (this.animations !== false) this.addAnimationMove(i, j, shift)
             this.swap(i, j, i, j + shift)
           }
         }
