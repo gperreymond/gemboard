@@ -1,4 +1,5 @@
 import uuid from 'uuid'
+import ee from 'event-emitter'
 
 require('pixi.js/dist/pixi.min.js')
 const Container = window.PIXI.Container
@@ -33,12 +34,32 @@ class GemButton {
     this._isDown = false
   }
   explode () {
-    this._container.scale.x = 0
-    this._container.scale.y = 0
+    setTimeout(() => {
+      this._container.scale.x -= 0.02
+      if (this._container.scale.x > 0) {
+        return this.explode()
+      } else {
+        this.emit('animation_explode_done')
+      }
+    }, 5)
   }
-  move () {
-    this._container.x = this.x * 100 + 50
-    this._container.y = this.y * 100 + 50
+  move (shift) {
+    if (!shift) {
+      this._container.x = this.x * 100 + 50
+      this._container.y = this.y * 100 + 50
+    } else {
+      let _shift = shift - 0.02
+      this.y += 0.02
+      this._container.y = this.y * 100 + 50
+      if (_shift <= 0) {
+        this.emit('animation_move_done')
+        this.y = Math.round(this.y)
+      } else {
+        setTimeout(() => {
+          this.move(_shift)
+        }, 5)
+      }
+    }
   }
   unselect () {
     this._isDown = false
@@ -46,6 +67,7 @@ class GemButton {
     this._container.scale.y = 1
   }
   select () {
+    console.log('gem seleced', this)
     this._isDown = true
     this._container.scale.x = 1.25
     this._container.scale.y = 1.25
@@ -57,5 +79,7 @@ class GemButton {
     return this._container
   }
 }
+
+ee(GemButton.prototype)
 
 export default GemButton

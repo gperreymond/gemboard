@@ -74,24 +74,41 @@ class Match3 {
                 // resolve animations
                 this.animations = []
                 this.resolveClusters()
-                console.log('animations')
-                this.animations.map(animations => {
-                  console.log('... block')
-                  animations.map(animation => {
-                    console.log('...... animation', animation)
-                    switch (animation.type) {
-                      case '1explode':
-                        animation.tile.gem.explode()
-                        break
-                      case '2move':
-                        animation.tile.gem.y = animation.row + animation.shift
-                        animation.tile.gem.move()
-                        break
-                      case '3create':
-                        break
-                    }
+                let sequence = this.animations.shift()
+                // def exploders
+                let exploders = () => {
+                  console.log('explode start', sequence.explode)
+                  let finish = sequence.explode.length
+                  sequence.explode.map(item => {
+                    item.tile.gem.on('animation_explode_done', () => {
+                      console.log('... event', 'animation_explode_done')
+                      finish -= 1
+                      if (finish === 0) {
+                        console.log('explode end')
+                        movers()
+                      }
+                    })
+                    return item.tile.gem.explode()
                   })
-                })
+                }
+                // def movers
+                let movers = () => {
+                  console.log('move start', sequence.move)
+                  let finish = sequence.move.length
+                  sequence.move.map(item => {
+                    item.tile.gem.on('animation_move_done', () => {
+                      console.log('... event', 'animation_move_done')
+                      finish -= 1
+                      if (finish === 0) {
+                        console.log('move end')
+                        item.tile.shift = 0
+                      }
+                    })
+                    return item.tile.gem.move(item.shift)
+                  })
+                }
+                // start all sequences
+                exploders()
               }
             }
           }
@@ -101,26 +118,23 @@ class Match3 {
     }
   }
   addAnimationExplode (col, row) {
-    this.animations[this.animations.length - 1].push({
+    this.animations[this.animations.length - 1]['explode'].push({
       col,
       row,
-      type: '1explode',
       tile: this.tiles[col][row]
     })
   }
   addAnimationCreate (col, row) {
-    this.animations[this.animations.length - 1].push({
+    this.animations[this.animations.length - 1]['create'].push({
       col,
       row,
-      type: '3create',
       tile: this.tiles[col][row]
     })
   }
   addAnimationMove (col, row, shift) {
-    this.animations[this.animations.length - 1].push({
+    this.animations[this.animations.length - 1]['move'].push({
       col,
       row,
-      type: '2move',
       shift,
       tile: this.tiles[col][row]
     })
@@ -203,7 +217,13 @@ class Match3 {
   **/
   removeClusters () {
     console.log('removeClusters')
-    if (this.animations !== false) this.animations.push([])
+    if (this.animations !== false) {
+      this.animations.push({
+        explode: [],
+        move: [],
+        create: []
+      })
+    }
     // Change the type of the tiles to -1, indicating a removed tile
     this.loopClusters((index, col, row, cluster) => {
       this.tiles[col][row].type = -1
