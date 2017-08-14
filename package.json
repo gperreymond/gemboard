@@ -33,6 +33,7 @@
     "lodash.camelcase": "4.3.0",
     "lodash.clone": "4.5.0",
     "lodash.findindex": "4.6.0",
+    "lodash.remove": "4.7.0",
     "lodash.shuffle": "4.2.0",
     "orderby": "1.1.0",
     "supports-color": "4.2.1",

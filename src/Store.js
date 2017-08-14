@@ -25,7 +25,11 @@ class Store extends Reflux.Store {
         stage: null,
         resources: null,
         match3: null,
-        selectedGem: null
+        selectedTile: null,
+        currentAnimations: false,
+        currentAnimationsExplode: 0,
+        currentAnimationsMove: 0,
+        currentAnimationsCreate: 0
       }
     }
     debug('constructor')
