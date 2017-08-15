@@ -20,6 +20,9 @@ class Tile {
     this.gem = false
     this.on('resolve_explode', () => {
       debug('gem %s (%s,%s) explode', this.name, this.x, this.y)
+      let sound = this._context.state.game.resources['fireBallMissileDeath'].sound
+      sound.volume = 0.25
+      sound.play()
       return this.exploders()
     })
     this.on('resolve_explode_complete', () => {
@@ -193,8 +196,10 @@ class Tile {
     // end move
     source.unselect()
     target.unselect()
-    this._context.state.game.selectedGem = null
     // resolve animations
+    this._context.state.game.currentSoundsConsecutiveKill = 1
+    this._context.state.game.currentSoundsGemKill = 0
+    this._context.state.game.selectedGem = null
     let match3 = this._context.state.game.match3
     match3.animations = []
     match3.resolveClusters()
@@ -237,21 +242,49 @@ class Tile {
     })
   }
   animationsNext () {
-    let match3 = this._context.state.game.match3
-    if (match3.animations.length > 0) {
-      debug('########## ANIMATIONS %s', match3.animations.length)
+    let game = this._context.state.game
+    if (game.match3.animations.length > 0) {
+      debug('########## ANIMATIONS %s', game.match3.animations.length)
       this.animations()
     } else {
-      match3.findClusters()
-      if (match3.clusters.length > 0) {
+      game.match3.findClusters()
+      if (game.match3.clusters.length > 0) {
         debug('NEW CLUSTERS FOUND')
-        match3.animations = []
-        match3.resolveClusters()
+        game.currentSoundsConsecutiveKill += 1
+        this.playPowerfulSounds()
+        game.match3.animations = []
+        game.match3.resolveClusters()
         this.animations()
       } else {
-        match3.findMoves()
-        debug('NO CLUSTERS, PLAYER TURN, MOVES=%s', match3.moves)
+        game.match3.findMoves()
+        debug('NO CLUSTERS, PLAYER TURN, MOVES=%s', game.match3.moves)
+        debug('gem kills=%s', game.currentSoundsGemKill)
+        if (game.currentSoundsGemKill >= 6 && game.currentSoundsGemKill < 12) {
+          this._context.state.game.resources['killingSpree'].sound.play()
+        }
+        if (game.currentSoundsGemKill >= 12 && game.currentSoundsGemKill < 18) {
+          this._context.state.game.resources['dominating'].sound.play()
+        }
+        if (game.currentSoundsGemKill >= 18) {
+          this._context.state.game.resources['godlike'].sound.play()
+        }
       }
+    }
+  }
+  playPowerfulSounds () {
+    let game = this._context.state.game
+    debug('consecutive kills=%s', game.currentSoundsConsecutiveKill)
+    if (game.currentSoundsConsecutiveKill === 2) {
+      this._context.state.game.resources['doubleKill'].sound.play()
+    }
+    if (game.currentSoundsConsecutiveKill === 3) {
+      this._context.state.game.resources['tripleKill'].sound.play()
+    }
+    if (game.currentSoundsConsecutiveKill === 4) {
+      this._context.state.game.resources['megaKill'].sound.play()
+    }
+    if (game.currentSoundsConsecutiveKill >= 5) {
+      this._context.state.game.resources['rampage'].sound.play()
     }
   }
 }

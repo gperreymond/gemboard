@@ -1,4 +1,3 @@
-require('pixi.js/dist/pixi.min.js')
 const Container = window.PIXI.Container
 const Sprite = window.PIXI.Sprite
 const Graphics = window.PIXI.Graphics
@@ -27,11 +26,13 @@ class GemButton {
     this._isDown = false
   }
   unselect () {
+    this._container.dragging = false
     this._isDown = false
     this._container.scale.x = 1
     this._container.scale.y = 1
   }
   select () {
+    this._container.dragging = true
     this._isDown = true
     this._container.scale.x = 1.25
     this._container.scale.y = 1.25

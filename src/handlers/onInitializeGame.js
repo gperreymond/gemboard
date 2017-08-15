@@ -1,12 +1,14 @@
+/* eslint no-unused-vars: 0 */
 import Debug from 'debug'
 
+import PIXI from 'pixi.js'
 import Actions from '../Actions'
 import Playground from '../game/Playground'
 import Match3 from '../game/Match3'
 
 const debug = Debug('gemboard-game:actions:onInitializeGame')
 
-require('pixi.js/dist/pixi.min.js')
+require('pixi-sound')
 const autoDetectRenderer = window.PIXI.autoDetectRenderer
 const loader = window.PIXI.loader
 const Container = window.PIXI.Container
@@ -39,6 +41,7 @@ const handler = (context) => {
     context.state.game.renderer = autoDetectRenderer(context.state.options.contentWidth * ratio, context.state.options.contentHeight * ratio, {antialias: true, transparent: false, resolution: 1})
     // create the root of the scene graph
     context.state.game.stage = new Container()
+    context.state.game.stage.visible = false
     context.state.game.stage.scale.x = ratio
     context.state.game.stage.scale.y = ratio
     debug('game size %s x %s', context.state.game.renderer.width, context.state.game.renderer.height)

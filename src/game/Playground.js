@@ -1,4 +1,3 @@
-require('pixi.js/dist/pixi.min.js')
 const Container = window.PIXI.Container
 const Sprite = window.PIXI.Sprite
 

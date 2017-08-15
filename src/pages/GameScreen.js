@@ -28,6 +28,7 @@ class Game extends Reflux.Component {
     Actions.initialize()
   }
   gameLoop () {
+    if (this.state.game.stage.visible === false) this.state.game.stage.visible = true
     this.state.game.renderer.render(this.state.game.stage)
     this.frame = requestAnimationFrame(this.gameLoop)
   }

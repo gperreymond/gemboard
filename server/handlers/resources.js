@@ -5,6 +5,8 @@ const Boom = require('boom')
 const Promise = require('bluebird')
 const camelCase = require('lodash.camelcase')
 
+const config = require('../../config/default')
+
 const getResource = (pattern, uri) => {
   return new Promise((resolve, reject) => {
     glob(path.resolve(__dirname, pattern, '*.*'), {}, (error, files) => {
@@ -26,11 +28,13 @@ module.exports = {
   auth: false,
   handler (request, reply) {
     Promise.props({
-      images: getResource('../../data/resources/images', request.server.info.uri + '/data/resources/images'),
-      sounds: getResource('../../data/resources/sounds', request.server.info.uri + '/data/resources/sounds')
+      images: getResource('../../data/resources/images', config.uri + '/data/resources/images'),
+      musics: getResource('../../data/resources/musics', config.uri + '/data/resources/musics'),
+      sounds: getResource('../../data/resources/sounds', config.uri + '/data/resources/sounds')
     }).then(result => {
       return reply({
         images: result.images,
+        musics: result.musics,
         sounds: result.sounds
       })
     }).catch(error => {

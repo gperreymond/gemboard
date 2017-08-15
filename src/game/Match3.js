@@ -1,9 +1,6 @@
-// import remove from 'lodash.remove'
 import Debug from 'debug'
-
 import Tile from './Tile'
 
-require('pixi.js/dist/pixi.min.js')
 const Container = window.PIXI.Container
 
 const debug = Debug('gemboard-game:match3')
@@ -16,6 +13,7 @@ class Match3 {
     this.clusters = []    // { column, row, length, horizontal }
     this.moves = []       // { column1, row1, column2, row2 }
     this.animations = false
+    this.music = false
   }
   getRandomTile () {
     let tile = new Tile(this._context)
@@ -41,6 +39,10 @@ class Match3 {
         this._container.addChild(tile.getContainer())
       }
     }
+    debug('initialize sounds')
+    this.music = this._context.state.game.resources['festival'].sound
+    this.music.volume = 0
+    this.music.play({loop: true, singleInstance: true})
   }
   addAnimationExplode (col, row) {
     this.animations[this.animations.length - 1]['explode'].push({
@@ -116,6 +118,16 @@ class Match3 {
     debug('resolveClusters clusters %o', this.clusters)
     this.removeClusters()
     this.shiftTiles()
+    if (this.animations === false) return true
+    this.clusters.map((cluster) => {
+      this._context.state.game.currentSoundsGemKill += cluster.length
+      if (cluster.length === 4) {
+        debug('EXTRA TURN')
+      }
+      if (cluster.length === 5) {
+        debug('EXTRA TURN, MANA BONUS')
+      }
+    })
   }
   /**
   Remove the clusters

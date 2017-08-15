@@ -29,7 +29,9 @@ class Store extends Reflux.Store {
         currentAnimations: false,
         currentAnimationsExplode: 0,
         currentAnimationsMove: 0,
-        currentAnimationsCreate: 0
+        currentAnimationsCreate: 0,
+        currentSoundsGemKill: 0,
+        currentSoundsConsecutiveKill: 0
       }
     }
     debug('constructor')
