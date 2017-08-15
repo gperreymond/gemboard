@@ -15,12 +15,11 @@ class Store extends Reflux.Store {
         text: '...',
         value: 0
       },
-      options: {
-        contentWidth: 800,
-        contentHeight: 800
-      },
       data: null,
       game: {
+        GAME_WIDTH: (8 * 140) + (2 * 250),
+        GAME_HEIGHT: 8 * 140,
+        BOARD_SIZE: 8,
         renderer: null,
         stage: null,
         resources: null,

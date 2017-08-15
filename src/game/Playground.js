@@ -10,8 +10,8 @@ class Playground {
     this._container = new Container()
     this._container.x = 0
     this._container.y = 0
-    this._container.width = 800
-    this._container.height = 800
+    this._container.width = this._context.state.game.BOARD_SIZE * 140
+    this._container.height = this._context.state.game.BOARD_SIZE * 140
     const TILE_A = 'tile4X4001'
     const TILE_B = 'tile4X4001'
     let tileName = TILE_A
@@ -22,12 +22,12 @@ class Playground {
         let texture = this._context.state.game.resources[tileName].texture
         let sprite = new Sprite(texture)
         sprite.alpha = 0.5
-        sprite.width = 100
-        sprite.height = 100
-        sprite.x = x * 100 * this._options.size
-        sprite.y = y * 100 * this._options.size
-        sprite.width = 100 * this._options.size
-        sprite.height = 100 * this._options.size
+        sprite.width = 140
+        sprite.height = 140
+        sprite.x = x * 140 * this._options.size
+        sprite.y = y * 140 * this._options.size
+        sprite.width = 140 * this._options.size
+        sprite.height = 140 * this._options.size
         this._container.addChild(sprite)
       }
     }

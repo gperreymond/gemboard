@@ -1,5 +1,15 @@
 html, body {
   overflow: hidden;
-  background: #000000;
+  background: #303030;
   color: #f0f0f0;
+}
+
+.game-canvas-container {
+  text-align: center;
+}
+
+.game-canvas-container canvas {
+  margin-top: 50vh;
+  transform: translateY(-50%);
+  background: #0c1318;
 }

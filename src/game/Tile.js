@@ -46,8 +46,8 @@ class Tile {
     this.on('resolve_create', (position) => {
       let game = this._context.state.game
       let currentTile = game.currentAnimations.create[position].tile
-      for (let x = 0; x < 8; x++) {
-        for (let y = 0; y < 8; y++) {
+      for (let x = 0; x < game.BOARD_SIZE; x++) {
+        for (let y = 0; y < game.BOARD_SIZE; y++) {
           let tile = game.match3.tiles[x][y]
           if (tile === false) {
             game.match3.tiles[x][y] = currentTile
@@ -70,7 +70,8 @@ class Tile {
   generate () {
     this.gem = new GemButton({
       color: tilecolors[this.type],
-      texture: this._context.state.game.resources[tilenames[this.type]].texture
+      texture: this._context.state.game.resources[tilenames[this.type]].texture,
+      textureBG: this._context.state.game.resources['tileBg001'].texture
     })
     this.getContainer().on('pointerup', () => {
       debug('tile %s (%s,%s) is pointerup', this.name, this.x, this.y)
@@ -110,7 +111,7 @@ class Tile {
           debug('all gem has exploded')
           setTimeout(() => {
             this.animationsMove()
-          }, 150)
+          }, 50)
         }
       }
     }, 5)
@@ -130,7 +131,7 @@ class Tile {
           debug('all gem has moved')
           setTimeout(() => {
             this.animationsCreate()
-          }, 150)
+          }, 50)
         }
       }
     }, 5)
@@ -150,14 +151,14 @@ class Tile {
           debug('########## DONE')
           setTimeout(() => {
             this.animationsNext()
-          }, 150)
+          }, 50)
         }
       }
     }, 5)
   }
   move () {
-    this.getContainer().x = this.x * 100 + 50
-    this.getContainer().y = this.y * 100 + 50
+    this.getContainer().x = this.x * 140 + 70
+    this.getContainer().y = this.y * 140 + 70
   }
   select () {
     this.gem.select()
@@ -218,7 +219,7 @@ class Tile {
   animationsExplode () {
     let game = this._context.state.game
     game.currentAnimations.explode.map(item => {
-      setTimeout(() => {
+      return setTimeout(() => {
         return item.tile.emit('resolve_explode')
       }, 50 * (game.currentAnimations.explode.indexOf(item) + 1))
     })
@@ -236,7 +237,7 @@ class Tile {
   animationsCreate () {
     let game = this._context.state.game
     game.currentAnimations.create.map(item => {
-      setTimeout(() => {
+      return setTimeout(() => {
         return item.tile.emit('resolve_create', game.currentAnimations.create.indexOf(item))
       }, 50 * (game.currentAnimations.create.indexOf(item) + 1))
     })
@@ -266,7 +267,7 @@ class Tile {
           this._context.state.game.resources['dominating'].sound.play()
         }
         if (game.currentSoundsGemKill >= 18) {
-          this._context.state.game.resources['godlike'].sound.play()
+          this._context.state.game.resources['godLike'].sound.play()
         }
       }
     }
@@ -283,7 +284,10 @@ class Tile {
     if (game.currentSoundsConsecutiveKill === 4) {
       this._context.state.game.resources['megaKill'].sound.play()
     }
-    if (game.currentSoundsConsecutiveKill >= 5) {
+    if (game.currentSoundsConsecutiveKill === 5) {
+      this._context.state.game.resources['rampage'].sound.play()
+    }
+    if (game.currentSoundsConsecutiveKill >= 6) {
       this._context.state.game.resources['rampage'].sound.play()
     }
   }

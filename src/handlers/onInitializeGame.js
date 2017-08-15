@@ -3,8 +3,8 @@ import Debug from 'debug'
 
 import PIXI from 'pixi.js'
 import Actions from '../Actions'
-import Playground from '../game/Playground'
 import Match3 from '../game/Match3'
+import Playground from '../game/Playground'
 
 const debug = Debug('gemboard-game:actions:onInitializeGame')
 
@@ -35,25 +35,28 @@ const handler = (context) => {
     debug('load is complete')
     context.state.game.resources = resources
     // calculate game screen ration
-    let ratio = Math.min(window.innerWidth / context.state.options.contentWidth, window.innerHeight / context.state.options.contentHeight)
+    let ratio = Math.min(window.innerWidth / context.state.game.GAME_WIDTH, window.innerHeight / context.state.game.GAME_HEIGHT)
     debug('screen radio %s', ratio)
     // setup PIXI Canvas in componentDidMount
-    context.state.game.renderer = autoDetectRenderer(context.state.options.contentWidth * ratio, context.state.options.contentHeight * ratio, {antialias: true, transparent: false, resolution: 1})
+    context.state.game.renderer = autoDetectRenderer(context.state.game.GAME_WIDTH * ratio, context.state.game.GAME_HEIGHT * ratio, {antialias: true, transparent: true, resolution: 1})
     // create the root of the scene graph
     context.state.game.stage = new Container()
     context.state.game.stage.visible = false
     context.state.game.stage.scale.x = ratio
     context.state.game.stage.scale.y = ratio
-    debug('game size %s x %s', context.state.game.renderer.width, context.state.game.renderer.height)
-    // initialize match3 container
+    debug('game size %s x %s', context.state.game.GAME_WIDTH, context.state.game.GAME_HEIGHT)
+    // initialize playground content
     let playground = new Playground({size: 4}, context)
     playground.initialize()
     context.state.game.stage.addChild(playground.getContainer())
+    playground.getContainer().x = (context.state.game.GAME_WIDTH - playground.getContainer().width) / 2
     // initialize match3 content
-    context.state.game.match3 = new Match3({rows: 8, cols: 8}, context)
+    context.state.game.match3 = new Match3({rows: context.state.game.BOARD_SIZE, cols: context.state.game.BOARD_SIZE}, context)
     context.state.game.match3.initialize()
     context.state.game.stage.addChild(context.state.game.match3.getContainer())
+    context.state.game.match3.getContainer().x = (context.state.game.GAME_WIDTH - context.state.game.match3.getContainer().width) / 2
     debug('moves %s', context.state.game.match3.moves.length)
+    console.log(playground.getContainer().width, context.state.game.match3.getContainer().width)
     //
     Actions.initializeComplete()
   })

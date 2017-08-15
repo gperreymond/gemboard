@@ -21,17 +21,18 @@ class Match3 {
     return tile
   }
   initialize () {
+    let game = this._context.state.game
     debug('initialize')
     this._container = new Container()
     this._container.x = 0
     this._container.y = 0
-    this._container.width = 800
-    this._container.height = 800
+    this._container.width = this._context.state.game.BOARD_SIZE * 140
+    this._container.height = this._context.state.game.BOARD_SIZE * 140
     this.createLevel()
     this.findMoves()
     this.findClusters()
-    for (let x = 0; x < 8; x++) {
-      for (let y = 0; y < 8; y++) {
+    for (let x = 0; x < this._context.state.game.BOARD_SIZE; x++) {
+      for (let y = 0; y < this._context.state.game.BOARD_SIZE; y++) {
         let tile = this.tiles[x][y]
         tile.x = x
         tile.y = y
@@ -39,6 +40,7 @@ class Match3 {
         this._container.addChild(tile.getContainer())
       }
     }
+    debug('initialize sizes', game.renderer.width, game.renderer.height, this.getContainer().width, this.getContainer().height)
     debug('initialize sounds')
     this.music = this._context.state.game.resources['festival'].sound
     this.music.volume = 0
@@ -127,6 +129,7 @@ class Match3 {
       if (cluster.length === 5) {
         debug('EXTRA TURN, MANA BONUS')
       }
+      return true
     })
   }
   /**
