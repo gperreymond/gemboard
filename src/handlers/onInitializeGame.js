@@ -1,12 +1,15 @@
 /* eslint no-unused-vars: 0 */
+import 'pixi.js'
 import Debug from 'debug'
 
-import PIXI from 'pixi.js'
 import Actions from '../Actions'
+
+import Boardgame from '../game/containers/Boardgame'
 import Match3 from '../game/Match3'
-import Playground from '../game/Playground'
 
 const debug = Debug('gemboard-game:actions:onInitializeGame')
+
+window.PIXI.utils.skipHello()
 
 require('pixi-sound')
 const autoDetectRenderer = window.PIXI.autoDetectRenderer
@@ -45,18 +48,14 @@ const handler = (context) => {
     context.state.game.stage.scale.x = ratio
     context.state.game.stage.scale.y = ratio
     debug('game size %s x %s', context.state.game.GAME_WIDTH, context.state.game.GAME_HEIGHT)
-    // initialize playground content
-    let playground = new Playground({size: 4}, context)
-    playground.initialize()
-    context.state.game.stage.addChild(playground.getContainer())
-    playground.getContainer().x = (context.state.game.GAME_WIDTH - playground.getContainer().width) / 2
+    // create boardgame container
+    context.state.game.stage.addChild(new Boardgame(context).getContainer())
     // initialize match3 content
     context.state.game.match3 = new Match3({rows: context.state.game.BOARD_SIZE, cols: context.state.game.BOARD_SIZE}, context)
     context.state.game.match3.initialize()
     context.state.game.stage.addChild(context.state.game.match3.getContainer())
     context.state.game.match3.getContainer().x = (context.state.game.GAME_WIDTH - context.state.game.match3.getContainer().width) / 2
     debug('moves %s', context.state.game.match3.moves.length)
-    console.log(playground.getContainer().width, context.state.game.match3.getContainer().width)
     //
     Actions.initializeComplete()
   })

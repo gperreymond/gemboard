@@ -1,3 +1,5 @@
+-r jsdom-global/register
 --timeout 5000
 --use_strict
+--compilers js:babel-core/register
 --recursive test/unit

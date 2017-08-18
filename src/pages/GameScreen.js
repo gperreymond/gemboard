@@ -1,4 +1,5 @@
 /* eslint jsx-quotes: ["error", "prefer-double"] */
+import 'fpsmeter'
 
 import React from 'react'
 import Reflux from 'reflux'
@@ -20,6 +21,7 @@ class Game extends Reflux.Component {
     if (this.state.initialized === true && this.state.game.renderer) {
       debug('componentDidUpdate %s', 'gameCanvas.appendChild')
       this.refs.gameCanvas.appendChild(this.state.game.renderer.view)
+      this.state.meter = new window.FPSMeter({ theme: 'light' })
       this.gameLoop()
     }
   }
@@ -29,6 +31,7 @@ class Game extends Reflux.Component {
   }
   gameLoop () {
     if (this.state.game.stage.visible === false) this.state.game.stage.visible = true
+    this.state.meter.tick()
     this.state.game.renderer.render(this.state.game.stage)
     this.frame = requestAnimationFrame(this.gameLoop)
   }

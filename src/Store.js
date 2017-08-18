@@ -31,7 +31,27 @@ class Store extends Reflux.Store {
         currentAnimationsCreate: 0,
         currentSoundsGemKill: 0,
         currentSoundsConsecutiveKill: 0,
-        currentPlayerTurn: true
+        currentPlayerTurn: true,
+        player: {
+          score: {
+            value: 0,
+            pixi: null,
+            style: {
+              normal: null,
+              selected: null
+            }
+          }
+        },
+        computer: {
+          score: {
+            value: 0,
+            pixi: null,
+            style: {
+              normal: null,
+              selected: null
+            }
+          }
+        }
       }
     }
     debug('constructor')

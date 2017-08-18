@@ -70,8 +70,7 @@ class Tile {
   generate () {
     this.gem = new GemButton({
       color: tilecolors[this.type],
-      texture: this._context.state.game.resources[tilenames[this.type]].texture,
-      textureBG: this._context.state.game.resources['tileBg001'].texture
+      texture: this._context.state.game.resources[tilenames[this.type]].texture
     })
     this.getContainer().on('pointerup', () => {
       debug('tile %s (%s,%s) is pointerup', this.name, this.x, this.y)
@@ -258,16 +257,50 @@ class Tile {
         this.animations()
       } else {
         game.match3.findMoves()
-        debug('NO CLUSTERS, PLAYER TURN, MOVES=%s', game.match3.moves)
-        debug('gem kills=%s', game.currentSoundsGemKill)
+        if (game.match3.moves.length === 0) {
+          return debug('$$$$$$$$$$ NEED TO RECREATE MATCH3 BOARD')
+        }
+        debug('NO CLUSTERS, MOVES=%s', game.match3.moves)
+        debug('GEM kills=%s', game.currentSoundsGemKill)
         if (game.currentSoundsGemKill >= 6 && game.currentSoundsGemKill < 12) {
-          this._context.state.game.resources['killingSpree'].sound.play()
+          game.resources['killingSpree'].sound.play()
         }
         if (game.currentSoundsGemKill >= 12 && game.currentSoundsGemKill < 18) {
-          this._context.state.game.resources['dominating'].sound.play()
+          game.resources['dominating'].sound.play()
         }
         if (game.currentSoundsGemKill >= 18) {
-          this._context.state.game.resources['godLike'].sound.play()
+          game.resources['godLike'].sound.play()
+        }
+        // calculate score
+        if (game.currentPlayerTurn === true) {
+          game.player.score.value += game.currentSoundsGemKill
+          game.player.score.pixi.text = '(' + game.player.score.value + ')'
+        } else {
+          game.computer.score.value += game.currentSoundsGemKill
+          game.computer.score.pixi.text = '(' + game.computer.score.value + ')'
+        }
+        // switch player/computer or not
+        if (game.currentPlayerTurn === true) {
+          // ... computer
+          game.player.score.pixi.style = game.player.score.style.normal
+          game.computer.score.pixi.style = game.computer.score.style.selected
+          game.currentPlayerTurn = false
+          let move = game.match3.moves[0]
+          debug('COMPUTER MOVE is ', move)
+          setTimeout(() => {
+            let source = game.match3.tiles[move.column1][move.row1]
+            source.select()
+            game.selectedTile = source
+            let target = game.match3.tiles[move.column2][move.row2]
+            game.match3.swap(move.column1, move.row1, move.column2, move.row2)
+            game.match3.findClusters()
+            target.resolve()
+          }, 1000)
+        } else {
+          // ... player
+          game.player.score.pixi.style = game.player.score.style.selected
+          game.computer.score.pixi.style = game.computer.score.style.normal
+          game.currentPlayerTurn = true
         }
       }
     }

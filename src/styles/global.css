@@ -13,3 +13,11 @@ html, body {
   transform: translateY(-50%);
   background: #0c1318;
 }
+
+#game-scene {
+  text-align: center;
+}
+#game-canvas {
+  margin-top: 50vh;
+  transform: translateY(-50%);
+}
