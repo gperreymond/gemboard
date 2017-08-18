@@ -9,22 +9,21 @@ class Text extends Reflux.Component {
   constructor (props) {
     super(props)
     this.state = {
-      element: false
+      container: false
     }
   }
   componentDidUpdate () {
     if (this.props.stage === false) return false
-    if (this.state.element === false) {
-      // ckecks done, time to create the element
-      this.state.element = new PIXI.Text(this.props.text, {
+    if (this.state.container === false) {
+      this.state.container = new PIXI.Text(this.props.text, {
         fill: '0xffffff',
         fontSize: this.props.fontSize
       })
-      this.state.element.x = this.props.x
-      this.state.element.y = this.props.y
-      this.props.stage.addChild(this.state.element)
+      this.state.container.x = this.props.x
+      this.state.container.y = this.props.y
+      this.props.stage.addChild(this.state.container)
     } else {
-      this.state.element.text = this.props.text
+      this.state.container.text = this.props.text
     }
   }
   componentWillUnmount () {

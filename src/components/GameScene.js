@@ -8,8 +8,9 @@ import Store from '../GameStore'
 import Actions from '../GameActions'
 
 import Engine from './Engine'
-import MatchBoard from './MatchBoard'
 import Loader from './Loader'
+import AppBar from './AppBar'
+import MatchBoard from './MatchBoard'
 
 const debug = Debug('gemboard-game:GameScene')
 
@@ -46,6 +47,7 @@ class GameScene extends Reflux.Component {
       <div id="game-scene">
         <div id="game-canvas">
           <Loader stage={this.state.stage} x={0} y={0} />
+          <AppBar stage={this.state.stage} x={20} y={20} />
           <MatchBoard stage={this.state.stage} x={(this.state.config.GAME_WIDTH - this.state.config.GAME_TILES * 140) / 2} y={0} />
         </div>
       </div>

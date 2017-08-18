@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import Reflux from 'reflux'
 
-import Text from './elements/Text'
 import Store from '../GameStore'
+import Button from './elements/Button'
 
 const PIXI = require('pixi.js')
 
-class Loader extends Reflux.Component {
+class AppBar extends Reflux.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -32,19 +32,19 @@ class Loader extends Reflux.Component {
   }
   render () {
     if (this.state.container === false) return (null)
-    this.state.container.visible = this.state.currentState === 'STATE_INITIALIZE'
+    this.state.container.visible = this.state.currentState === 'STATE_HOMEPAGE'
     return (
       <div>
-        <Text stage={this.state.container} text={this.state.progress.title} x={10} y={10} fontSize={50} />
-        <Text stage={this.state.container} text={this.state.progress.message} x={10} y={60} fontSize={40} />
+        <Button stage={this.state.container} x={0} y={0} width={140} height={140} />
+        <Button stage={this.state.container} x={140 + 28} y={0} width={140} height={140} />
       </div>
     )
   }
 }
 
-Loader.propTypes = {
+AppBar.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired
 }
 
-export default Loader
+export default AppBar

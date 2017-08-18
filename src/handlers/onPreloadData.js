@@ -36,7 +36,7 @@ const handler = (context) => {
       })
       // execute game data loader
       PIXI.loader.on('progress', (loader, resource) => {
-        debug('load in progress %s', resource.name)
+        // debug('load in progress %s', resource.name)
         context.setState({progress: {
           title: 'Preloading game data',
           message: 'Progress: ' + Math.round(loader.progress) + '%'
