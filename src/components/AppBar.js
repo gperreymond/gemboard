@@ -3,10 +3,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import Reflux from 'reflux'
+import Debug from 'debug'
 
 import Store from '../GameStore'
+import Actions from '../GameActions'
 import Button from './elements/Button'
 
+const debug = Debug('gemboard-game:AppBar')
 const PIXI = require('pixi.js')
 
 class AppBar extends Reflux.Component {
@@ -16,6 +19,13 @@ class AppBar extends Reflux.Component {
       container: false
     }
     this.store = Store
+    this.handlePvP = () => {
+      debug('handlePvP')
+      Actions.changeModeToPVP()
+    }
+    this.handleGuild = () => {
+      debug('handleGuild')
+    }
   }
   componentDidUpdate () {
     if (this.props.stage === false) return false
@@ -35,8 +45,8 @@ class AppBar extends Reflux.Component {
     this.state.container.visible = this.state.currentState === 'STATE_HOMEPAGE'
     return (
       <div>
-        <Button stage={this.state.container} x={0} y={0} width={140} height={140} />
-        <Button stage={this.state.container} x={140 + 28} y={0} width={140} height={140} />
+        <Button stage={this.state.container} onClick={this.handlePvP} x={0} y={0} width={140} height={140} />
+        <Button stage={this.state.container} onClick={this.handleGuild} x={140 + 24} y={0} width={140} height={140} />
       </div>
     )
   }

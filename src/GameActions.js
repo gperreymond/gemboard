@@ -2,7 +2,8 @@ import Reflux from 'reflux'
 
 const GameActions = Reflux.createActions([
   'updateCurrentTime',
-  'preloadData'
+  'preloadData',
+  'changeModeToPVP'
 ])
 
 export default GameActions
