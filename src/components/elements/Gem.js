@@ -2,6 +2,9 @@
 
 import PropTypes from 'prop-types'
 import Reflux from 'reflux'
+import uuid from 'uuid'
+
+import Actions from '../../GameActions'
 
 const PIXI = require('pixi.js')
 
@@ -17,6 +20,7 @@ class Gem extends Reflux.Component {
     if (this.props.stage === false) return false
     if (this.state.container === false) {
       this.state.container = new PIXI.Container()
+      this.state.container.uuid = uuid.v4()
       // background
       let graphics = new PIXI.Graphics()
       graphics.lineStyle(0)
@@ -43,6 +47,13 @@ class Gem extends Reflux.Component {
       this.state.container.y = this.props.y * 140
       this.state.container.interactive = true
       this.state.container.buttonMode = true
+      // events
+      this.state.container.on('pointerdown', () => {
+        Actions.selectGem(this)
+      })
+      this.state.container.on('pointerup', () => {
+        Actions.moveGem(this)
+      })
       this.props.stage.addChild(this.state.container)
     }
   }
@@ -55,6 +66,7 @@ class Gem extends Reflux.Component {
 }
 
 Gem.propTypes = {
+  name: PropTypes.string.isRequired,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   type: PropTypes.number.isRequired,
