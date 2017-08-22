@@ -51,7 +51,7 @@
     "eslint-plugin-standard": "3.0.1",
     "event-emitter": "0.3.5",
     "fpsmeter": "0.3.1",
-    "jsdom": "11.1.0",
+    "jsdom": "11.2.0",
     "jsdom-global": "3.0.2",
     "mocha": "3.5.0",
     "mocha-standard": "1.0.0",

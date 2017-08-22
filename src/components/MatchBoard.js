@@ -23,7 +23,11 @@ class MatchBoard extends Reflux.Component {
       tiles: [],
       moves: [],
       clusters: [],
-      animations: false
+      animations: false,
+      currentAnimations: false,
+      currentAnimationsExplode: 0,
+      currentAnimationsCreate: 0,
+      currentAnimationsMove: 0
     }
     this.store = Store
   }
@@ -61,11 +65,27 @@ class MatchBoard extends Reflux.Component {
         done = true
         debug('moves %s', this.state.moves.length)
         debug('>>> CREATE LEVEL END with %s children', this.state.game.children.length)
+        console.log(this.state.tiles)
         this.animationsShow()
       }
     }
   }
+  replaceCoordsTiles () {
+    debug('replaceCoordsTiles')
+    for (let x = 0; x < this.state.config.GAME_TILES; x++) {
+      for (let y = 0; y < this.state.config.GAME_TILES; y++) {
+        if (!this.state.tiles[x]) this.state.tiles[x] = []
+        this.state.tiles[x][y].props.x = x
+        this.state.tiles[x][y].props.y = y
+        if (this.state.animations === false) {
+          this.state.tiles[x][y].state.container.x = x * 140
+          this.state.tiles[x][y].state.container.y = y * 140
+        }
+      }
+    }
+  }
   removeInvisibleTiles () {
+    debug('removeInvisibleTiles')
     this.state.game.children.map((child) => {
       if (child.visible === false) {
         remove(this.state.game.children, child)
@@ -95,6 +115,7 @@ class MatchBoard extends Reflux.Component {
     this.removeClusters()
     this.shiftTiles()
     this.removeInvisibleTiles()
+    this.replaceCoordsTiles()
     if (this.state.animations === false) return true
     this.state.clusters.map((cluster) => {
       // WARNING! this._context.state.game.currentSoundsGemKill += cluster.length
@@ -298,10 +319,9 @@ class MatchBoard extends Reflux.Component {
   Swap two tiles in the level
   **/
   swap (x1, y1, x2, y2) {
-    let source = clone(this.state.tiles[x1][y1])
-    let target = clone(this.state.tiles[x2][y2])
-    this.state.tiles[x1][y1] = target
-    this.state.tiles[x2][y2] = source
+    let typeswap = this.state.tiles[x1][y1]
+    this.state.tiles[x1][y1] = this.state.tiles[x2][y2]
+    this.state.tiles[x2][y2] = typeswap
   }
   /**
   Check if two tiles can be swapped
@@ -332,22 +352,85 @@ class MatchBoard extends Reflux.Component {
       Actions.unselectGem()
     } else {
       debug('... resolve move')
-      // update props
-      this.state.tiles[x1][y1].props.x = x1
-      this.state.tiles[x1][y1].props.y = y2
-      this.state.tiles[x2][y2].props.x = x2
-      this.state.tiles[x2][y2].props.y = y2
-      // move
+      // move source
       this.state.tiles[x1][y1].state.container.x = x1 * 140
       this.state.tiles[x1][y1].state.container.y = y1 * 140
+      // move target
       this.state.tiles[x2][y2].state.container.x = x2 * 140
       this.state.tiles[x2][y2].state.container.y = y2 * 140
       // resolve
       this.state.animations = []
       this.resolveClusters()
-      console.log(this.state.animations)
       debug('########## ANIMATIONS %s', this.state.animations.length)
+      this.animations()
     }
+  }
+  animations () {
+    this.state.currentAnimations = this.state.animations.shift()
+    this.state.currentAnimationsExplode = 0
+    this.state.currentAnimationsMove = 0
+    this.state.currentAnimationsCreate = 0
+    debug('********** currentAnimations %o', this.state.currentAnimations)
+    this.animationsExplode()
+  }
+  animationsExplode () {
+    this.state.currentAnimations.explode.map(item => {
+      return setTimeout(() => {
+        item.tile.on('resolve_explode_complete', () => {
+          debug('events >> resolve_explode_complete')
+          this.state.currentAnimationsExplode += 1
+          if (this.state.currentAnimations.explode.length === this.state.currentAnimationsExplode) {
+            debug('all gem has exploded')
+            setTimeout(() => {
+              if (this.state.currentAnimations.move.length > 0) {
+                this.animationsMove()
+              } else {
+                this.animationsCreate()
+              }
+            }, 50)
+          }
+        })
+        debug('events >> resolve_explode')
+        return item.tile.emit('resolve_explode')
+      }, 5 * (this.state.currentAnimations.explode.indexOf(item) + 1))
+    })
+  }
+  animationsMove () {
+    this.state.currentAnimations.move.map(item => {
+      return setTimeout(() => {
+        item.tile.on('resolve_move_complete', () => {
+          debug('events >> resolve_move_complete')
+          this.state.currentAnimationsMove += 1
+          if (this.state.currentAnimations.move.length === this.state.currentAnimationsMove) {
+            debug('all gem has moved')
+            setTimeout(() => {
+              this.animationsCreate()
+            }, 50)
+          }
+        })
+        debug('events >> resolve_move')
+        return item.tile.emit('resolve_move', item.shift)
+      }, 5 * (this.state.currentAnimations.move.indexOf(item) + 1))
+    })
+  }
+  animationsCreate () {
+    this.state.currentAnimations.create.map(item => {
+      return setTimeout(() => {
+        item.tile.on('resolve_create_complete', () => {
+          debug('events >> resolve_create_complete')
+          this.state.currentAnimationsCreate += 1
+          if (this.state.currentAnimations.create.length === this.state.currentAnimationsCreate) {
+            debug('all gem has been creeated')
+            setTimeout(() => {
+              debug('########## DONE')
+              console.log(this.state.container.children.length)
+            }, 50)
+          }
+        })
+        debug('events >> resolve_create')
+        return item.tile.emit('resolve_create', this.state)
+      }, 5 * (this.state.currentAnimations.create.indexOf(item) + 1))
+    })
   }
   addAnimationExplode (col, row) {
     this.state.animations[this.state.animations.length - 1]['explode'].push({
