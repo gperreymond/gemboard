@@ -2,6 +2,7 @@ import Debug from 'debug'
 
 import 'fpsmeter'
 const PIXI = require('pixi.js')
+PIXI.utils.skipHello()
 
 const debug = Debug('gemboard-game:Engine')
 

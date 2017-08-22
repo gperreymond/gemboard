@@ -1,12 +1,12 @@
 import Reflux from 'reflux'
 
 const GameActions = Reflux.createActions([
-  'updateCurrentTime',
-  'preloadData',
   'changeModeToPVP',
+  'moveGem',
+  'preloadData',
   'selectGem',
   'unselectGem',
-  'moveGem'
+  'updateCurrentTime'
 ])
 
 export default GameActions

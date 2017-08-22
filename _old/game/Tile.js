@@ -263,13 +263,13 @@ class Tile {
         debug('NO CLUSTERS, MOVES=%s', game.match3.moves)
         debug('GEM kills=%s', game.currentSoundsGemKill)
         if (game.currentSoundsGemKill >= 6 && game.currentSoundsGemKill < 12) {
-          game.resources['killingSpree'].sound.play()
+          game.resources['killingSpree'].data.play()
         }
         if (game.currentSoundsGemKill >= 12 && game.currentSoundsGemKill < 18) {
-          game.resources['dominating'].sound.play()
+          game.resources['dominating'].data.play()
         }
         if (game.currentSoundsGemKill >= 18) {
-          game.resources['godLike'].sound.play()
+          game.resources['godLike'].data.play()
         }
         // calculate score
         if (game.currentPlayerTurn === true) {
@@ -309,19 +309,19 @@ class Tile {
     let game = this._context.state.game
     debug('consecutive kills=%s', game.currentSoundsConsecutiveKill)
     if (game.currentSoundsConsecutiveKill === 2) {
-      this._context.state.game.resources['doubleKill'].sound.play()
+      this._context.state.game.resources['doubleKill'].data.play()
     }
     if (game.currentSoundsConsecutiveKill === 3) {
-      this._context.state.game.resources['tripleKill'].sound.play()
+      this._context.state.game.resources['tripleKill'].data.play()
     }
     if (game.currentSoundsConsecutiveKill === 4) {
-      this._context.state.game.resources['megaKill'].sound.play()
+      this._context.state.game.resources['megaKill'].data.play()
     }
     if (game.currentSoundsConsecutiveKill === 5) {
-      this._context.state.game.resources['rampage'].sound.play()
+      this._context.state.game.resources['rampage'].data.play()
     }
     if (game.currentSoundsConsecutiveKill >= 6) {
-      this._context.state.game.resources['rampage'].sound.play()
+      this._context.state.game.resources['rampage'].data.play()
     }
   }
 }

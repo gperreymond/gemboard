@@ -18,6 +18,7 @@ class MatchBoard extends Reflux.Component {
     debug('constructor')
     super(props)
     this.state = {
+      music: false,
       container: false,
       game: false,
       tiles: [],
@@ -118,7 +119,7 @@ class MatchBoard extends Reflux.Component {
     this.replaceCoordsTiles()
     if (this.state.animations === false) return true
     this.state.clusters.map((cluster) => {
-      // WARNING! this._context.state.game.currentSoundsGemKill += cluster.length
+      this.state.currentSoundsGemKill += cluster.length
       if (cluster.length === 4) {
         debug('EXTRA TURN')
       }
@@ -359,10 +360,31 @@ class MatchBoard extends Reflux.Component {
       this.state.tiles[x2][y2].state.container.x = x2 * 140
       this.state.tiles[x2][y2].state.container.y = y2 * 140
       // resolve
+      this.state.currentSoundsGemKill = 0
+      this.state.currentSoundsConsecutiveKill = 1
+      this.state.currentSoundsGemKill = 0
       this.state.animations = []
       this.resolveClusters()
       debug('########## ANIMATIONS %s', this.state.animations.length)
       this.animations()
+    }
+  }
+  playPowerfulSounds () {
+    debug('consecutive kills=%s', this.state.currentSoundsConsecutiveKill)
+    if (this.state.currentSoundsConsecutiveKill === 2) {
+      this.state.resources['doubleKill'].sound.play()
+    }
+    if (this.state.currentSoundsConsecutiveKill === 3) {
+      this.state.resources['tripleKill'].sound.play()
+    }
+    if (this.state.currentSoundsConsecutiveKill === 4) {
+      this.state.resources['megaKill'].sound.play()
+    }
+    if (this.state.currentSoundsConsecutiveKill === 5) {
+      this.state.resources['rampage'].sound.play()
+    }
+    if (this.state.currentSoundsConsecutiveKill >= 6) {
+      this.state.resources['rampage'].sound.play()
     }
   }
   animations () {
@@ -423,7 +445,9 @@ class MatchBoard extends Reflux.Component {
             debug('all gem has been creeated')
             setTimeout(() => {
               debug('########## DONE')
-              console.log(this.state.container.children.length)
+              setTimeout(() => {
+                this.animationsNext()
+              }, 50)
             }, 50)
           }
         })
@@ -468,7 +492,48 @@ class MatchBoard extends Reflux.Component {
       }
     }, 5)
   }
+  animationsNext () {
+    if (this.state.animations.length > 0) {
+      debug('########## ANIMATIONS %s', this.state.animations.length)
+      this.animations()
+    } else {
+      this.findClusters()
+      if (this.state.clusters.length > 0) {
+        debug('NEW CLUSTERS FOUND')
+        this.state.currentSoundsConsecutiveKill += 1
+        this.playPowerfulSounds()
+        setTimeout(() => {
+          this.state.animations = []
+          this.resolveClusters()
+          this.animations()
+        }, 200)
+      } else {
+        setTimeout(() => {
+          this.findMoves()
+          if (this.state.moves.length === 0) {
+            return debug('$$$$$$$$$$ NEED TO RECREATE MATCH3 BOARD')
+          }
+          debug('NO CLUSTERS, MOVES=%s', this.state.moves)
+          debug('GEM kills=%s', this.state.currentSoundsGemKill)
+          if (this.state.currentSoundsGemKill >= 6 && this.state.currentSoundsGemKill < 12) {
+            this.state.resources['killingSpree'].sound.play()
+          }
+          if (this.state.currentSoundsGemKill >= 12 && this.state.currentSoundsGemKill < 18) {
+            this.state.resources['dominating'].sound.play()
+          }
+          if (this.state.currentSoundsGemKill >= 18) {
+            this.state.resources['godLike'].sound.play()
+          }
+        }, 200)
+      }
+    }
+  }
   componentDidUpdate (prevProps, prevState) {
+    if (this.state.resources['festival'] && this.state.music === false) {
+      this.state.music = this.state.resources['festival'].sound
+      this.state.music.volume = 0
+      this.state.music.play({loop: true, singleInstance: true})
+    }
     if (this.props.stage === false) return false
     if (this.state.resources === false || this.state.resources === true) return false
     if (this.state.container === false) {
@@ -514,6 +579,9 @@ class MatchBoard extends Reflux.Component {
         this.checkMoves(source, target)
       }
     }
+  }
+  componentDidMount () {
+    debug('componentDidMount')
   }
   componentWillUnmount () {
     Reflux.Component.prototype.componentWillUnmount.call(this)

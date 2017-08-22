@@ -2,6 +2,7 @@ import request from 'request'
 import Debug from 'debug'
 
 const PIXI = require('pixi.js')
+require('pixi-sound')
 const debug = Debug('gemboard-game:actions:onPreloadData')
 
 const handler = (context) => {
@@ -36,7 +37,7 @@ const handler = (context) => {
       })
       // execute game data loader
       PIXI.loader.on('progress', (loader, resource) => {
-        // debug('load in progress %s', resource.name)
+        debug('load in progress %s', resource.name)
         context.setState({progress: {
           title: 'Preloading game data',
           message: 'Progress: ' + Math.round(loader.progress) + '%'
