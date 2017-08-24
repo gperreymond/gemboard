@@ -3,6 +3,7 @@ import Debug from 'debug'
 import 'fpsmeter'
 const PIXI = require('pixi.js')
 PIXI.utils.skipHello()
+require('pixi-sound')
 
 const debug = Debug('gemboard-game:Engine')
 

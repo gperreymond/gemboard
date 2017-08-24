@@ -12,18 +12,18 @@ class Button extends Reflux.Component {
       container: false
     }
   }
-  componentDidUpdate () {
-    if (this.props.stage === false) return false
+  componentDidUpdate (prevProps, prevState) {
     if (this.state.container === false) {
       this.state.container = new PIXI.Container()
+      this.state.container.id = this.props.id
       this.state.container.interactive = true
       this.state.container.buttonMode = true
       this.state.container.width = this.props.width
       this.state.container.height = this.props.height
-      // button background
+      // background
       let graphics = new PIXI.Graphics()
-      graphics.lineStyle(8, 0xff9900, 1)
-      graphics.beginFill(0x000066, 0.75)
+      graphics.lineStyle(8, 0xcc9900, 1)
+      graphics.beginFill(0x004080, 0.75)
       graphics.drawRoundedRect(0, 0, this.props.width, this.props.height, 10)
       graphics.endFill()
       this.state.container.addChild(graphics)
@@ -46,6 +46,7 @@ class Button extends Reflux.Component {
 }
 
 Button.propTypes = {
+  id: PropTypes.string,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,

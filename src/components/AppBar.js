@@ -14,27 +14,32 @@ const PIXI = require('pixi.js')
 
 class AppBar extends Reflux.Component {
   constructor (props) {
+    debug('constructor')
     super(props)
     this.state = {
       container: false
     }
     this.store = Store
-    this.handlePvP = () => {
-      debug('handlePvP')
-      Actions.changeModeToPVP()
-    }
-    this.handleGuild = () => {
-      debug('handleGuild')
-    }
+    this.handlePvP = this.handlePvP.bind(this)
+    this.handleGuild = this.handleGuild.bind(this)
   }
-  componentDidUpdate () {
-    if (this.props.stage === false) return false
+  handlePvP () {
+    debug('handlePvP')
+    Actions.createLevel('STATE_FIGHTING_PVP')
+  }
+  handleGuild () {
+    debug('handleGuild')
+    debug(this.state)
+  }
+  componentDidUpdate (prevProps, prevState) {
+    if (this.state.stage === false) return false
     if (this.state.container === false) {
       this.state.container = new PIXI.Container()
+      this.state.container.id = this.props.id
       this.state.container.visible = false
       this.state.container.x = this.props.x
       this.state.container.y = this.props.y
-      this.props.stage.addChild(this.state.container)
+      this.state.stage.addChild(this.state.container)
     }
   }
   componentWillUnmount () {
@@ -53,6 +58,7 @@ class AppBar extends Reflux.Component {
 }
 
 AppBar.propTypes = {
+  id: PropTypes.string,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired
 }

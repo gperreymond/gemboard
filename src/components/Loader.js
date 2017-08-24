@@ -17,14 +17,15 @@ class Loader extends Reflux.Component {
     }
     this.store = Store
   }
-  componentDidUpdate () {
-    if (this.props.stage === false) return false
+  componentDidUpdate (prevProps, prevState) {
+    if (this.state.stage === false) return false
     if (this.state.container === false) {
       this.state.container = new PIXI.Container()
+      this.state.container.id = this.props.id
       this.state.container.visible = false
       this.state.container.x = this.props.x
       this.state.container.y = this.props.y
-      this.props.stage.addChild(this.state.container)
+      this.state.stage.addChild(this.state.container)
     }
   }
   componentWillUnmount () {
@@ -43,6 +44,7 @@ class Loader extends Reflux.Component {
 }
 
 Loader.propTypes = {
+  id: PropTypes.string,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired
 }

@@ -12,13 +12,13 @@ class Text extends Reflux.Component {
       container: false
     }
   }
-  componentDidUpdate () {
-    if (this.props.stage === false) return false
+  componentDidUpdate (prevProps, prevState) {
     if (this.state.container === false) {
       this.state.container = new PIXI.Text(this.props.text, {
         fill: '0xffffff',
         fontSize: this.props.fontSize
       })
+      this.state.container.id = this.props.id
       this.state.container.x = this.props.x
       this.state.container.y = this.props.y
       this.props.stage.addChild(this.state.container)
@@ -35,6 +35,7 @@ class Text extends Reflux.Component {
 }
 
 Text.propTypes = {
+  id: PropTypes.string,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   text: PropTypes.string.isRequired,

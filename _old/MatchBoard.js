@@ -168,125 +168,6 @@ class MatchBoard extends Reflux.Component {
     this.state.clusters = []
   }
   /**
-  Find clusters in the level
-  **/
-  findClusters () {
-    // Reset clusters
-    this.state.clusters = []
-    // Find horizontal clusters
-    for (let j = 0; j < this.state.config.GAME_TILES; j++) {
-      // Start with a single tile, cluster of 1
-      let matchlength = 1
-      for (let i = 0; i < this.state.config.GAME_TILES; i++) {
-        let checkcluster = false
-        if (i === this.state.config.GAME_TILES - 1) {
-          // Last tile
-          checkcluster = true
-        } else {
-          // Check the type of the next tile
-          if (this.state.tiles[i][j].props.type === this.state.tiles[i + 1][j].props.type && this.state.tiles[i][j].props.type !== -1) {
-            // Same type as the previous tile, increase matchlength
-            matchlength += 1
-          } else {
-            // Different type
-            checkcluster = true
-          }
-        }
-        // Check if there was a cluster
-        if (checkcluster) {
-          if (matchlength >= 3) {
-            // Found a horizontal cluster
-            this.state.clusters.push({ column: i + 1 - matchlength, row: j, length: matchlength, horizontal: true })
-          }
-          matchlength = 1
-        }
-      }
-    }
-    // Find vertical clusters
-    for (let i = 0; i < this.state.config.GAME_TILES; i++) {
-      // Start with a single tile, cluster of 1
-      let matchlength = 1
-      for (let j = 0; j < this.state.config.GAME_TILES; j++) {
-        let checkcluster = false
-        if (j === this.state.config.GAME_TILES - 1) {
-          // Last tile
-          checkcluster = true
-        } else {
-          // Check the type of the next tile
-          if (this.state.tiles[i][j].props.type === this.state.tiles[i][j + 1].props.type && this.state.tiles[i][j].props.type !== -1) {
-            // Same type as the previous tile, increase matchlength
-            matchlength += 1
-          } else {
-            // Different type
-            checkcluster = true
-          }
-        }
-        // Check if there was a cluster
-        if (checkcluster) {
-          if (matchlength >= 3) {
-            // Found a vertical cluster
-            this.state.clusters.push({ column: i, row: j + 1 - matchlength, length: matchlength, horizontal: false })
-          }
-          matchlength = 1
-        }
-      }
-    }
-  }
-  /**
-  Remove the clusters
-  **/
-  removeClusters () {
-    if (this.state.animations !== false) {
-      debug('removeClusters with effects')
-      this.state.animations.push({
-        explode: [],
-        move: [],
-        create: []
-      })
-    } else {
-      debug('removeClusters without any effect')
-    }
-    // Change the type of the tiles to -1, indicating a removed tile
-    this.loopClusters((index, col, row, cluster) => {
-      this.state.tiles[col][row].props.type = -1
-      if (this.state.animations !== false) this.addAnimationExplode(col, row)
-    })
-    // Calculate how much a tile should be shifted downwards
-    for (let i = 0; i < this.state.config.GAME_TILES; i++) {
-      let shift = 0
-      for (let j = this.state.config.GAME_TILES - 1; j >= 0; j--) {
-        // Loop from bottom to top
-        if (this.state.tiles[i][j].props.type === -1) {
-          // Tile is removed, increase shift
-          shift++
-          this.state.tiles[i][j].props.shift = 0
-        } else {
-          // Set the shift
-          this.state.tiles[i][j].props.shift = shift
-        }
-      }
-    }
-  }
-  /**
-  Loop over the cluster tiles and execute a function
-  **/
-  loopClusters (func) {
-    for (let i = 0; i < this.state.clusters.length; i++) {
-      //  { column, row, length, horizontal }
-      let cluster = this.state.clusters[i]
-      let coffset = 0
-      let roffset = 0
-      for (let j = 0; j < cluster.length; j++) {
-        func(i, cluster.column + coffset, cluster.row + roffset, cluster)
-        if (cluster.horizontal) {
-          coffset++
-        } else {
-          roffset++
-        }
-      }
-    }
-  }
-  /**
   Shift tiles and insert new tiles
   **/
   shiftTiles () {
@@ -563,10 +444,10 @@ class MatchBoard extends Reflux.Component {
       this.props.stage.addChild(this.state.container)
       this.props.stage.addChild(this.state.game)
     }
-    if (prevState.currentState !== this.state.currentState && this.state.currentState === 'STATE_FIGHTING') {
+    if (prevState.currentState !== this.state.currentState && this.state.currentState === 'STATE_FIGHTING_PVP') {
       this.createLevel()
     }
-    if (this.state.canSwap !== false && this.state.currentState === 'STATE_FIGHTING') {
+    if (this.state.canSwap !== false && this.state.currentState === 'STATE_FIGHTING_PVP') {
       let source = clone(this.state.canSwap.source)
       let target = clone(this.state.canSwap.target)
       Actions.unselectGem()
@@ -588,7 +469,7 @@ class MatchBoard extends Reflux.Component {
   }
   render () {
     if (this.state.container === false) return (null)
-    this.state.container.visible = this.state.currentState === 'STATE_FIGHTING'
+    this.state.container.visible = this.state.currentState === 'STATE_FIGHTING_PVP'
     return (null)
   }
 }

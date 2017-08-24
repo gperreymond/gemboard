@@ -1,18 +1,28 @@
-import onUpdateCurrentTime from './handlers/onUpdateCurrentTime'
 import onPreloadData from './handlers/onPreloadData'
-import onChangeModeToPVP from './handlers/onChangeModeToPVP'
-import onSelectGem from './handlers/onSelectGem'
-import onUnselectGem from './handlers/onUnselectGem'
-import onMoveGem from './handlers/onMoveGem'
+import onStartEngine from './handlers/onStartEngine'
+import onUpdateCurrentTime from './handlers/onUpdateCurrentTime'
+
+import onCreateLevel from './handlers/match3/onCreateLevel'
+import onResolveClusters from './handlers/match3/onResolveClusters'
+import onFindClusters from './handlers/match3/onFindClusters'
+import onRemoveClusters from './handlers/match3/onRemoveClusters'
+import onShiftTiles from './handlers/match3/onShiftTiles'
+import onFindMoves from './handlers/match3/onFindMoves'
+import onCreateLevelComplete from './handlers/match3/onCreateLevelComplete'
 
 class GameHandlers {
 }
 
-GameHandlers.prototype.onUpdateCurrentTime = onUpdateCurrentTime
 GameHandlers.prototype.onPreloadData = onPreloadData
-GameHandlers.prototype.onChangeModeToPVP = onChangeModeToPVP
-GameHandlers.prototype.onSelectGem = onSelectGem
-GameHandlers.prototype.onUnselectGem = onUnselectGem
-GameHandlers.prototype.onMoveGem = onMoveGem
+GameHandlers.prototype.onStartEngine = onStartEngine
+GameHandlers.prototype.onUpdateCurrentTime = onUpdateCurrentTime
+
+GameHandlers.prototype.onCreateLevel = onCreateLevel
+GameHandlers.prototype.onResolveClusters = onResolveClusters
+GameHandlers.prototype.onFindClusters = onFindClusters
+GameHandlers.prototype.onRemoveClusters = onRemoveClusters
+GameHandlers.prototype.onShiftTiles = onShiftTiles
+GameHandlers.prototype.onFindMoves = onFindMoves
+GameHandlers.prototype.onCreateLevelComplete = onCreateLevelComplete
 
 export default GameHandlers
