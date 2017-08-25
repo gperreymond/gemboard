@@ -74,6 +74,7 @@ class StateFightingPvP extends Reflux.Component {
     debug('componentDidMount')
     Actions.createLevelComplete.listen((e) => {
       debug('createLevelComplete()')
+      this.setBackground()
       this.start()
     })
   }

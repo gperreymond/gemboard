@@ -36,7 +36,8 @@ class GameStore extends Reflux.Store {
         currentState: false,
         tiles: [],
         clusters: [],
-        moves: []
+        moves: [],
+        selectedGem: false
       }
     }
     this.listenables = [Actions]
@@ -54,6 +55,9 @@ class GameStore extends Reflux.Store {
   onShiftTiles () { this.handlers.onShiftTiles(this) }
   onFindMoves () { this.handlers.onFindMoves(this) }
   onCreateLevelComplete () { this.handlers.onCreateLevelComplete(this) }
+
+  onSelectGem (gem) { this.handlers.onSelectGem(gem, this) }
+  onMoveGems (gem) { this.handlers.onMoveGems(gem, this) }
 }
 
 export default GameStore

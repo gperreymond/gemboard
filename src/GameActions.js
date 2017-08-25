@@ -10,7 +10,9 @@ const GameActions = Reflux.createActions([
   'removeClusters',
   'shiftTiles',
   'findMoves',
-  'createLevelComplete'
+  'createLevelComplete',
+  'selectGem',
+  'moveGems'
 ])
 
 export default GameActions

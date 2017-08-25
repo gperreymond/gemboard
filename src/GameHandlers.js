@@ -10,6 +10,9 @@ import onShiftTiles from './handlers/match3/onShiftTiles'
 import onFindMoves from './handlers/match3/onFindMoves'
 import onCreateLevelComplete from './handlers/match3/onCreateLevelComplete'
 
+import onSelectGem from './handlers/animations/onSelectGem'
+import onMoveGems from './handlers/animations/onMoveGems'
+
 class GameHandlers {
 }
 
@@ -24,5 +27,8 @@ GameHandlers.prototype.onRemoveClusters = onRemoveClusters
 GameHandlers.prototype.onShiftTiles = onShiftTiles
 GameHandlers.prototype.onFindMoves = onFindMoves
 GameHandlers.prototype.onCreateLevelComplete = onCreateLevelComplete
+
+GameHandlers.prototype.onSelectGem = onSelectGem
+GameHandlers.prototype.onMoveGems = onMoveGems
 
 export default GameHandlers

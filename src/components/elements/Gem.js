@@ -2,7 +2,8 @@ import Reflux from 'reflux'
 
 const PIXI = require('pixi.js')
 
-const Store = require('../../GameStore')
+const Actions = require('../../GameActions').default
+const Store = require('../../GameStore').default
 
 class Gem extends Reflux.Component {
   constructor (props) {
@@ -10,7 +11,7 @@ class Gem extends Reflux.Component {
     this.state = {
       container: false
     }
-    this.store = Store.default.singleton.state
+    this.store = Store.singleton.state
   }
   componentDidUpdate (prevProps, prevState) {
     if (this.state.container === false) {
@@ -18,6 +19,8 @@ class Gem extends Reflux.Component {
       this.state.container = new PIXI.Container()
       this.state.container.width = 140
       this.state.container.height = 140
+      this.state.container.interactive = true
+      this.state.container.buttonMode = true
       // background
       let graphics = new PIXI.Graphics()
       graphics.lineStyle(0)
@@ -43,6 +46,14 @@ class Gem extends Reflux.Component {
       this.state.container.x = this.props.x * 140 + 70
       this.state.container.y = this.props.y * 140 + 70
       this.props.stage.addChild(this.state.container)
+      // events
+      this.state.container.on('pointerdown', () => {
+        Actions.selectGem(this)
+      })
+      this.state.container.on('pointerup', () => {
+        if (this.store.game.selectedGem === false) return false
+        Actions.moveGems(this)
+      })
     }
   }
   componentWillUnmount () {
