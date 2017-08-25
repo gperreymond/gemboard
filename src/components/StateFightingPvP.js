@@ -6,6 +6,7 @@ import Debug from 'debug'
 
 import Actions from '../GameActions'
 import Store from '../GameStore'
+import Gem from './elements/Gem'
 
 const debug = Debug('gemboard-game:StateFightingPvP')
 const PIXI = require('pixi.js')
@@ -21,6 +22,7 @@ class StateFightingPvP extends Reflux.Component {
     this.store = Store
     this.start = () => {
       debug('start()')
+      this.state.gems = []
       this.state.stage.removeChild(this.state.match)
       // create new
       this.state.match = new PIXI.Container()
@@ -30,16 +32,10 @@ class StateFightingPvP extends Reflux.Component {
       this.state.match.y = -1000
       // create tiles
       this.state.game.tiles.map((item) => {
-        item.map((tile) => {
-          let color = this.state.config.GAME_TILES_COLORS[tile.type]
-          let graphics = new PIXI.Graphics()
-          graphics.beginFill(color, 1)
-          graphics.drawRoundedRect(tile.x * 140, tile.y * 140, 140, 140, 10)
-          graphics.endFill()
-          this.state.match.addChild(graphics)
-          return true
+        return item.map((tile) => {
+          let gem = new Gem({x: tile.x, y: tile.y, type: tile.type, stage: this.state.match})
+          return gem.componentDidUpdate()
         })
-        return true
       })
       this.state.stage.addChild(this.state.match)
       debug('show()')
@@ -57,6 +53,21 @@ class StateFightingPvP extends Reflux.Component {
           debug('show() done')
         }
       }, 5)
+    }
+    this.setBackground = () => {
+      for (let x = 0; x < this.state.config.GAME_TILES; x++) {
+        for (let y = 0; y < this.state.config.GAME_TILES; y++) {
+          let random = Math.floor(Math.random() * this.state.config['GAME_BGS_NAMES'].length)
+          let name = this.state.config['GAME_BGS_NAMES'][random]
+          let texture = this.state.resources[name].texture
+          let sprite = new PIXI.Sprite(texture)
+          sprite.width = 140
+          sprite.height = 140
+          sprite.x = x * 140
+          sprite.y = y * 140
+          this.state.container.addChild(sprite)
+        }
+      }
     }
   }
   componentDidMount () {

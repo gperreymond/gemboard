@@ -45,7 +45,6 @@ const handler = (context) => {
       })
       PIXI.loader.load((loader, resources) => {
         debug('load is complete')
-        context.state.stage.visible = true
         context.setState({
           currentState: 'STATE_HOMEPAGE',
           stage: context.state.engine.stage,

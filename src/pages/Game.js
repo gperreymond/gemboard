@@ -19,12 +19,15 @@ class Game extends Reflux.Component {
   componentDidMount () {
     debug('componentDidMount')
     Actions.updateCurrentTime()
+    Actions.preloadData()
   }
   componentWillUnmount () {
     debug('componentWillUnmount')
     Reflux.Component.prototype.componentWillUnmount.call(this)
   }
   render () {
+    if (this.state.resources === false) return (null)
+    if (this.state.resources === true) return (null)
     return (
       <GameScene />
     )
