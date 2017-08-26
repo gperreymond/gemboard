@@ -24,7 +24,7 @@ const loopClusters = (context, func) => {
   }
 }
 
-const handler = (context) => {
+const handler = (callback, context) => {
   debug('remove the clusters')
   // Change the type of the tiles to -1, indicating a removed tile
   loopClusters(context, (index, col, row, cluster) => {
@@ -48,6 +48,7 @@ const handler = (context) => {
   context.setState({
     game: context.state.game
   })
+  if (callback) return callback()
   Actions.shiftTiles()
 }
 

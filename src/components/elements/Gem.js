@@ -51,6 +51,7 @@ class Gem extends Reflux.Component {
         Actions.selectGem(this)
       })
       this.state.container.on('pointerup', () => {
+        if (!this.store.game.selectedGem) return false
         if (this.store.game.selectedGem === false) return false
         Actions.moveGems(this)
       })

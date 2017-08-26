@@ -21,13 +21,12 @@ class StateFightingPvP extends Reflux.Component {
     }
     this.store = Store
     this.start = () => {
-      debug('start()')
+      debug('create the gems board')
       this.state.gems = []
       this.state.stage.removeChild(this.state.match)
       // create new
       this.state.match = new PIXI.Container()
       this.state.match.id = 'match3'
-      this.state.match.visible = false
       this.state.match.x = this.props.x
       this.state.match.y = -1000
       // create tiles
@@ -38,21 +37,12 @@ class StateFightingPvP extends Reflux.Component {
         })
       })
       this.state.stage.addChild(this.state.match)
-      debug('show()')
-      this.show()
-    }
-    this.show = () => {
-      if (this.state.match.y === 0) return false
-      this.state.match.visible = true
-      setTimeout(() => {
-        this.state.match.y += 10
-        if (this.state.match.y < 0) {
-          this.show()
-        } else {
-          this.state.match.y = 0
-          debug('show() done')
-        }
-      }, 5)
+      debug('gems board arrival animation')
+      const action = new PIXI.action.MoveTo(this.state.match.x, 0, 0.5)
+      const animation = PIXI.actionManager.runAction(this.state.match, action)
+      animation.on('end', (elapsed) => {
+        debug('gems board is ready for playing')
+      })
     }
     this.setBackground = () => {
       for (let x = 0; x < this.state.config.GAME_TILES; x++) {
@@ -73,7 +63,7 @@ class StateFightingPvP extends Reflux.Component {
   componentDidMount () {
     debug('componentDidMount')
     Actions.createLevelComplete.listen((e) => {
-      debug('createLevelComplete()')
+      debug('action createLevelComplete has been emitted')
       this.setBackground()
       this.start()
     })

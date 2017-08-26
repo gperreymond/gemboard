@@ -4,6 +4,7 @@ import 'fpsmeter'
 const PIXI = require('pixi.js')
 PIXI.utils.skipHello()
 require('pixi-sound')
+require('pixi-action')
 
 const debug = Debug('gemboard-game:Engine')
 
@@ -36,6 +37,7 @@ class Engine {
     requestAnimationFrame(this.animate)
     if (this.renderer) {
       this.renderer.render(this.stage)
+      PIXI.actionManager.update()
     }
   }
 }
