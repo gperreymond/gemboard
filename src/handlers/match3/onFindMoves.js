@@ -1,3 +1,4 @@
+import clone from 'lodash.clone'
 import Debug from 'debug'
 
 import Actions from '../../GameActions'
@@ -5,9 +6,14 @@ import Actions from '../../GameActions'
 const debug = Debug('gemboard-game:actions:onFindMoves')
 
 const swap = (context, x1, y1, x2, y2) => {
-  let typeswap = context.state.game.tiles[x1][y1]
-  context.state.game.tiles[x1][y1] = context.state.game.tiles[x2][y2]
-  context.state.game.tiles[x2][y2] = typeswap
+  let source = clone(context.state.game.tiles[x1][y1])
+  let target = clone(context.state.game.tiles[x2][y2])
+  context.state.game.tiles[x1][y1].type = target.type
+  context.state.game.tiles[x1][y1].inserted = target.inserted || false
+  if (context.state.game.tiles[x1][y1].inserted === false) delete context.state.game.tiles[x1][y1].inserted
+  context.state.game.tiles[x2][y2].type = source.type
+  context.state.game.tiles[x2][y2].inserted = source.inserted || false
+  if (context.state.game.tiles[x2][y2].inserted === false) delete context.state.game.tiles[x2][y2].inserted
 }
 
 const handler = (context) => {
@@ -27,6 +33,9 @@ const handler = (context) => {
           // Found a move
           debug('... found a move')
           context.state.game.moves.push({column1: i, row1: j, column2: i + 1, row2: j})
+          context.setState({
+            game: context.state.game
+          })
         }
       })
     }
@@ -44,6 +53,9 @@ const handler = (context) => {
           // Found a move
           debug('... found a move')
           context.state.game.moves.push({column1: i, row1: j, column2: i, row2: j + 1})
+          context.setState({
+            game: context.state.game
+          })
         }
       })
     }

@@ -28,7 +28,7 @@ class StateFightingPvP extends Reflux.Component {
       this.state.match = new PIXI.Container()
       this.state.match.id = 'match3'
       this.state.match.x = this.props.x
-      this.state.match.y = -1000
+      this.state.match.y = -2000
       // create tiles
       this.state.game.tiles.map((item) => {
         return item.map((tile) => {
@@ -38,11 +38,14 @@ class StateFightingPvP extends Reflux.Component {
       })
       this.state.stage.addChild(this.state.match)
       debug('gems board arrival animation')
-      const action = new PIXI.action.MoveTo(this.state.match.x, 0, 0.5)
-      const animation = PIXI.actionManager.runAction(this.state.match, action)
-      animation.on('end', (elapsed) => {
-        debug('gems board is ready for playing')
-      })
+      setTimeout(() => {
+        const action = new PIXI.action.MoveTo(this.state.match.x, 0, 0.5)
+        const animation = PIXI.actionManager.runAction(this.state.match, action)
+        animation.on('end', (elapsed) => {
+          debug('gems board is ready for playing')
+          debug(this.state.game.tiles)
+        })
+      }, 500)
     }
     this.setBackground = () => {
       for (let x = 0; x < this.state.config.GAME_TILES; x++) {

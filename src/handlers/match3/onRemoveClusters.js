@@ -29,6 +29,10 @@ const handler = (callback, context) => {
   // Change the type of the tiles to -1, indicating a removed tile
   loopClusters(context, (index, col, row, cluster) => {
     context.state.game.tiles[col][row].type = -1
+    context.state.game.animations.explode.push({x: col, y: row})
+    context.setState({
+      game: context.state.game
+    })
   })
   // Calculate how much a tile should be shifted downwards
   for (let i = 0; i < context.state.config.GAME_TILES; i++) {

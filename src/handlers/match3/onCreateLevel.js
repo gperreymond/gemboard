@@ -10,7 +10,13 @@ const handler = (currentState, context) => {
     currentState: false,
     tiles: [],
     clusters: [],
-    moves: []
+    moves: [],
+    animations: {
+      explode: [],
+      move: [],
+      create: []
+    },
+    selectedGem: false
   }
   debug(currentState)
   for (let col = 0; col < context.state.config.GAME_TILES; col++) {

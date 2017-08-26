@@ -1,4 +1,5 @@
 import Reflux from 'reflux'
+import remove from 'lodash.remove'
 
 const PIXI = require('pixi.js')
 
@@ -54,6 +55,32 @@ class Gem extends Reflux.Component {
         if (!this.store.game.selectedGem) return false
         if (this.store.game.selectedGem === false) return false
         Actions.moveGems(this)
+      })
+      this.state.container.on('animation_explode', (item) => {
+        const action = new PIXI.action.ScaleTo(0, 0, 0.2)
+        const animation = PIXI.actionManager.runAction(this.state.container, action)
+        animation.on('end', () => {
+          remove(this.store.game.animations.explode, item)
+          if (this.store.game.animations.explode.length === 0) {
+            if (this.store.game.animations.move.length === 0) {
+              Actions.createGems()
+            } else {
+              Actions.moveDownGems()
+            }
+          }
+        })
+      })
+      this.state.container.on('animation_move', (item) => {
+        const action = new PIXI.action.MoveTo(item.x * 140 + 70, (item.y + item.shift) * 140 + 70, 0.2)
+        const animation = PIXI.actionManager.runAction(this.state.container, action)
+        animation.on('end', () => {
+          this.props.x = item.x
+          this.props.y = item.y + item.shift
+          remove(this.store.game.animations.move, item)
+          if (this.store.game.animations.move.length === 0) {
+            Actions.createGems()
+          }
+        })
       })
     }
   }

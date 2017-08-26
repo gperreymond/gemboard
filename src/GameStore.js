@@ -37,6 +37,11 @@ class GameStore extends Reflux.Store {
         tiles: [],
         clusters: [],
         moves: [],
+        animations: {
+          explode: [],
+          move: [],
+          create: []
+        },
         selectedGem: false
       }
     }
@@ -52,12 +57,16 @@ class GameStore extends Reflux.Store {
   onResolveClusters () { this.handlers.onResolveClusters(this) }
   onFindClusters (callback = false) { this.handlers.onFindClusters(callback, this) }
   onRemoveClusters (callback = false) { this.handlers.onRemoveClusters(callback, this) }
-  onShiftTiles () { this.handlers.onShiftTiles(this) }
+  onShiftTiles (callback = false) { this.handlers.onShiftTiles(callback, this) }
   onFindMoves () { this.handlers.onFindMoves(this) }
   onCreateLevelComplete () { this.handlers.onCreateLevelComplete(this) }
 
   onSelectGem (gem) { this.handlers.onSelectGem(gem, this) }
   onMoveGems (gem) { this.handlers.onMoveGems(gem, this) }
+  onExplodeGems () { this.handlers.onExplodeGems(this) }
+  onMoveDownGems () { this.handlers.onMoveDownGems(this) }
+  onCreateGems () { this.handlers.onCreateGems(this) }
+  onAnimationsDone () { this.handlers.onAnimationsDone(this) }
 }
 
 export default GameStore

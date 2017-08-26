@@ -12,6 +12,10 @@ import onCreateLevelComplete from './handlers/match3/onCreateLevelComplete'
 
 import onSelectGem from './handlers/animations/onSelectGem'
 import onMoveGems from './handlers/animations/onMoveGems'
+import onExplodeGems from './handlers/animations/onExplodeGems'
+import onMoveDownGems from './handlers/animations/onMoveDownGems'
+import onCreateGems from './handlers/animations/onCreateGems'
+import onAnimationsDone from './handlers/animations/onAnimationsDone'
 
 class GameHandlers {
 }
@@ -30,5 +34,9 @@ GameHandlers.prototype.onCreateLevelComplete = onCreateLevelComplete
 
 GameHandlers.prototype.onSelectGem = onSelectGem
 GameHandlers.prototype.onMoveGems = onMoveGems
+GameHandlers.prototype.onExplodeGems = onExplodeGems
+GameHandlers.prototype.onMoveDownGems = onMoveDownGems
+GameHandlers.prototype.onCreateGems = onCreateGems
+GameHandlers.prototype.onAnimationsDone = onAnimationsDone
 
 export default GameHandlers

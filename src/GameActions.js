@@ -12,7 +12,11 @@ const GameActions = Reflux.createActions([
   'findMoves',
   'createLevelComplete',
   'selectGem',
-  'moveGems'
+  'moveGems',
+  'explodeGems',
+  'moveDownGems',
+  'createGems',
+  'animationsDone'
 ])
 
 export default GameActions
