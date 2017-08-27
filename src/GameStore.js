@@ -27,13 +27,14 @@ class GameStore extends Reflux.Store {
         GAME_TILES_NAMES: ['gemWater', 'gemFire', 'gemAir', 'gemEarth', 'gemNature', 'gemDeath', 'gemMagic'],
         GAME_BGS_NAMES: ['tileBg001', 'tileBg002', 'tileBg003', 'tileBg004'],
         GAME_WIDTH: (sizeOfTiles * 140) + (2 * 250),
-        GAME_HEIGHT: sizeOfTiles * 140
+        GAME_HEIGHT: (sizeOfTiles * 140) + 100
       },
       resources: false,
       stage: false,
       engine: false,
       game: {
         currentState: false,
+        currentTurnPlayer: true,
         music: false,
         tiles: [],
         clusters: [],

@@ -47,10 +47,18 @@ const handler = (context) => {
         // moves to resolve
         debug('moves left ?')
         context.state.game.score.consecutiveKills = 1
+        context.state.game.currentTurnPlayer = !context.state.game.currentTurnPlayer
         context.setState({
           game: context.state.game
         })
         Actions.findMoves(() => {
+          if (context.state.game.currentTurnPlayer === false) {
+            debug('----- COMPUTER TURN -----')
+            let move = context.state.game.moves.shift()
+            console.log(move)
+          } else {
+            debug('----- PLAYER TURN -----')
+          }
         })
       }
     })

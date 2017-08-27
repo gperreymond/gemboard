@@ -8,7 +8,7 @@ import Actions from '../GameActions'
 import Store from '../GameStore'
 import Gem from './elements/Gem'
 
-const debug = Debug('gemboard-game:StateFightingPvP')
+const debug = Debug('gemboard-game:Match3Board')
 const PIXI = require('pixi.js')
 
 class StateFightingPvP extends Reflux.Component {
@@ -39,7 +39,7 @@ class StateFightingPvP extends Reflux.Component {
       this.state.stage.addChild(this.state.match)
       debug('gems board arrival animation')
       setTimeout(() => {
-        const action = new PIXI.action.MoveTo(this.state.match.x, 0, 0.5)
+        const action = new PIXI.action.MoveTo(this.state.match.x, this.state.container.y, 0.5)
         const animation = PIXI.actionManager.runAction(this.state.match, action)
         animation.on('end', (elapsed) => {
           debug('gems board is ready for playing')

@@ -8,6 +8,7 @@ const handler = (currentState, context) => {
   debug('create a level with random tiles')
   context.state.game = {
     currentState: false,
+    currentTurnPlayer: true,
     music: false,
     tiles: [],
     clusters: [],

@@ -16,8 +16,6 @@ class Button extends Reflux.Component {
     if (this.state.container === false) {
       this.state.container = new PIXI.Container()
       this.state.container.id = this.props.id
-      this.state.container.interactive = true
-      this.state.container.buttonMode = true
       this.state.container.width = this.props.width
       this.state.container.height = this.props.height
       // background
@@ -27,14 +25,25 @@ class Button extends Reflux.Component {
       graphics.drawRoundedRect(0, 0, this.props.width, this.props.height, 10)
       graphics.endFill()
       this.state.container.addChild(graphics)
-      // events
-      this.state.container.on('pointerdown', () => {
-        this.props.onClick()
-      })
+      // button or not ?
+      if (this.props.onClick) {
+        this.state.container.interactive = true
+        this.state.container.buttonMode = true
+        this.state.container.on('pointerdown', () => {
+          this.props.onClick()
+        })
+      }
       // global element
+      this.state.container.visible = this.props.visible || true
       this.state.container.x = this.props.x
       this.state.container.y = this.props.y
       this.props.stage.addChild(this.state.container)
+    } else {
+      if (this.props.visible === undefined) {
+        this.state.container.visible = true
+      } else {
+        this.state.container.visible = this.props.visible
+      }
     }
   }
   componentWillUnmount () {
@@ -51,7 +60,8 @@ Button.propTypes = {
   y: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  onClick: PropTypes.func.isRequired
+  visible: PropTypes.bool,
+  onClick: PropTypes.func
 }
 
 export default Button
