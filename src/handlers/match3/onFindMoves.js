@@ -16,7 +16,7 @@ const swap = (context, x1, y1, x2, y2) => {
   if (context.state.game.tiles[x2][y2].inserted === false) delete context.state.game.tiles[x2][y2].inserted
 }
 
-const handler = (context) => {
+const handler = (callback, context) => {
   debug('search and find moves in the tiles')
   // Reset moves
   context.state.game.moves = []
@@ -67,6 +67,7 @@ const handler = (context) => {
     game: context.state.game
   })
   debug('moves %o', context.state.game.moves)
+  if (callback) return callback()
   if (context.state.game.moves.length > 0) {
     Actions.createLevelComplete()
   } else {

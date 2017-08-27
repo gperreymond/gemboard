@@ -58,7 +58,7 @@ class GameStore extends Reflux.Store {
   onFindClusters (callback = false) { this.handlers.onFindClusters(callback, this) }
   onRemoveClusters (callback = false) { this.handlers.onRemoveClusters(callback, this) }
   onShiftTiles (callback = false) { this.handlers.onShiftTiles(callback, this) }
-  onFindMoves () { this.handlers.onFindMoves(this) }
+  onFindMoves (callback = false) { this.handlers.onFindMoves(callback, this) }
   onCreateLevelComplete () { this.handlers.onCreateLevelComplete(this) }
 
   onSelectGem (gem) { this.handlers.onSelectGem(gem, this) }

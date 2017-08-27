@@ -10,7 +10,8 @@ class Gem extends Reflux.Component {
   constructor (props) {
     super(props)
     this.state = {
-      container: false
+      container: false,
+      item: false
     }
     this.store = Store.singleton.state
   }
@@ -84,10 +85,11 @@ class Gem extends Reflux.Component {
           }
         })
       })
-      this.state.container.on('animation_create', (item) => {
-        this.props.x = item.x
-        this.props.y = item.y
-        this.props.type = item.type
+      this.state.container.on('animation_create', (source, item) => {
+        this.state.item = item
+        this.props.x = source.x
+        this.props.y = source.y
+        this.props.type = source.type
         this.state.container.destroy()
         this.state.container = false
         this.componentDidUpdate(false)
@@ -100,6 +102,7 @@ class Gem extends Reflux.Component {
         const action = new PIXI.action.ScaleTo(1, 1, 0.2)
         const animation = PIXI.actionManager.runAction(this.state.container, action)
         animation.on('end', () => {
+          this.store.game.animations.create.shift()
           if (this.store.game.animations.create.length === 0) {
             Actions.animationsDone()
           }
