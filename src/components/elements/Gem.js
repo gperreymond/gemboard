@@ -14,10 +14,11 @@ class Gem extends Reflux.Component {
     }
     this.store = Store.singleton.state
   }
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate (visible = true) {
     if (this.state.container === false) {
       // container
       this.state.container = new PIXI.Container()
+      this.state.container.visible = visible
       this.state.container.width = 140
       this.state.container.height = 140
       this.state.container.interactive = true
@@ -61,6 +62,7 @@ class Gem extends Reflux.Component {
         const animation = PIXI.actionManager.runAction(this.state.container, action)
         animation.on('end', () => {
           remove(this.store.game.animations.explode, item)
+          this.state.container.visible = false
           if (this.store.game.animations.explode.length === 0) {
             if (this.store.game.animations.move.length === 0) {
               Actions.createGems()
@@ -82,6 +84,27 @@ class Gem extends Reflux.Component {
           }
         })
       })
+      this.state.container.on('animation_create', (item) => {
+        this.props.x = item.x
+        this.props.y = item.y
+        this.props.type = item.type
+        this.state.container.destroy()
+        this.state.container = false
+        this.componentDidUpdate(false)
+      })
+      // animation when created
+      if (this.state.container.visible === false) {
+        this.state.container.scale.x = 0
+        this.state.container.scale.y = 0
+        this.state.container.visible = true
+        const action = new PIXI.action.ScaleTo(1, 1, 0.2)
+        const animation = PIXI.actionManager.runAction(this.state.container, action)
+        animation.on('end', () => {
+          if (this.store.game.animations.create.length === 0) {
+            Actions.animationsDone()
+          }
+        })
+      }
     }
   }
   componentWillUnmount () {

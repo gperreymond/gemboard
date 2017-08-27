@@ -8,9 +8,8 @@ const handler = (context) => {
     game: context.state.game
   })
   let match3 = false
-  context.state.stage.children.map((child) => {
+  context.state.stage.children.map(function (child) {
     if (child.id === 'match3') match3 = child
-    return true
   })
   context.state.game.animations.move.map(function (item) {
     match3.children.map(function (child) {
