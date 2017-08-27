@@ -34,6 +34,7 @@ class GameStore extends Reflux.Store {
       engine: false,
       game: {
         currentState: false,
+        music: false,
         tiles: [],
         clusters: [],
         moves: [],
@@ -42,7 +43,11 @@ class GameStore extends Reflux.Store {
           move: [],
           create: []
         },
-        selectedGem: false
+        selectedGem: false,
+        score: {
+          extraTurn: false,
+          consecutiveKills: 1
+        }
       }
     }
     this.listenables = [Actions]

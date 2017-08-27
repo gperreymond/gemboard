@@ -8,6 +8,7 @@ const handler = (currentState, context) => {
   debug('create a level with random tiles')
   context.state.game = {
     currentState: false,
+    music: false,
     tiles: [],
     clusters: [],
     moves: [],
@@ -16,7 +17,11 @@ const handler = (currentState, context) => {
       move: [],
       create: []
     },
-    selectedGem: false
+    selectedGem: false,
+    score: {
+      extraTurn: false,
+      consecutiveKills: 1
+    }
   }
   debug(currentState)
   for (let col = 0; col < context.state.config.GAME_TILES; col++) {

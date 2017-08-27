@@ -59,6 +59,9 @@ class Gem extends Reflux.Component {
         Actions.moveGems(this)
       })
       this.state.container.on('animation_explode', (item) => {
+        let sound = this.store.resources['fireBallMissileDeath'].sound
+        sound.volume = 0.1
+        sound.play()
         const action = new PIXI.action.ScaleTo(0, 0, 0.2)
         const animation = PIXI.actionManager.runAction(this.state.container, action)
         animation.on('end', () => {
