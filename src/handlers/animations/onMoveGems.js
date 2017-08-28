@@ -67,6 +67,10 @@ const handler = (gem, context) => {
           })
         })
       } else {
+        // calculate extra turn
+        context.state.game.clusters.map((cluster) => {
+          if (cluster.length >= 4) context.state.game.score.extraTurn = true
+        })
         debug('move could be done')
         const action = new PIXI.action.ScaleTo(1, 1, 0.1)
         const animation = PIXI.actionManager.runAction(context.state.game.selectedGem.state.container, action)

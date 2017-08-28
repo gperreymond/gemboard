@@ -46,8 +46,9 @@ const handler = (context) => {
       } else {
         // moves to resolve
         debug('moves left ?')
+        if (context.state.game.score.extraTurn === false) context.state.game.currentTurnPlayer = !context.state.game.currentTurnPlayer
+        context.state.game.score.extraTurn = false
         context.state.game.score.consecutiveKills = 1
-        context.state.game.currentTurnPlayer = !context.state.game.currentTurnPlayer
         context.setState({
           game: context.state.game
         })
