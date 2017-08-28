@@ -25,7 +25,7 @@ class AppBar extends Reflux.Component {
   }
   handlePvP () {
     debug('handlePvP')
-    Actions.createLevel('STATE_FIGHTING_PVP')
+    Actions.createLevel('STATE_FIGHTING')
   }
   handleGuild () {
     debug('handleGuild')
@@ -51,7 +51,7 @@ class AppBar extends Reflux.Component {
     return (
       <div>
         <Button stage={this.state.container} onClick={this.handlePvP} x={0} y={0} width={140} height={140} />
-        <Button stage={this.state.container} onClick={this.handleGuild} x={140 + 24} y={0} width={140} height={140} />
+        <Button stage={this.state.container} onClick={this.handleGuild} x={140 + 20} y={0} width={140} height={140} />
       </div>
     )
   }

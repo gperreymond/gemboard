@@ -8,17 +8,19 @@ const handler = (context) => {
     game: context.state.game
   })
   let match3 = false
-  context.state.stage.children.map(function (child) {
+  context.state.stage.children.map((child) => {
     if (child.id === 'match3') match3 = child
+    return child
   })
-  context.state.game.animations.explode.map(function (item) {
-    match3.children.map(function (child) {
+  context.state.game.animations.explode.map((item) => {
+    return match3.children.map((child) => {
       let x = (child.x - 70) / 140
       let y = (child.y - 70) / 140
       if (item.x === x && item.y === y) {
         debug('... explode in (%s:%s)', item.x, item.y)
         child.emit('animation_explode', item)
       }
+      return child
     })
   })
 }

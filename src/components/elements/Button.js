@@ -20,8 +20,7 @@ class Button extends Reflux.Component {
       this.state.container.height = this.props.height
       // background
       let graphics = new PIXI.Graphics()
-      graphics.lineStyle(8, 0xcc9900, 1)
-      graphics.beginFill(0x004080, 0.75)
+      graphics.beginFill(0xac7339, 1)
       graphics.drawRoundedRect(0, 0, this.props.width, this.props.height, 10)
       graphics.endFill()
       this.state.container.addChild(graphics)

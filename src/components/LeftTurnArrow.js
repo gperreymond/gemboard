@@ -36,7 +36,7 @@ class LeftTurnArrow extends Reflux.Component {
   }
   render () {
     if (this.state.container === false) return (null)
-    this.state.container.visible = this.state.currentState === 'STATE_FIGHTING_PVP'
+    this.state.container.visible = this.state.currentState === 'STATE_FIGHTING'
     return (
       <Button visible={this.state.game.currentTurnPlayer} stage={this.state.container} x={0} y={0} width={20} height={100} />
     )

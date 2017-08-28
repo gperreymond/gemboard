@@ -1,17 +1,15 @@
 /* eslint jsx-quotes: ["error", "prefer-double"] */
 
 import PropTypes from 'prop-types'
-import React from 'react'
 import Reflux from 'reflux'
 import Debug from 'debug'
 
 import Store from '../GameStore'
-import Button from './elements/Button'
 
-const debug = Debug('gemboard-game:RightTurnArrow')
+const debug = Debug('gemboard-game:Background')
 const PIXI = require('pixi.js')
 
-class RightTurnArrow extends Reflux.Component {
+class Background extends Reflux.Component {
   constructor (props) {
     debug('constructor')
     super(props)
@@ -23,11 +21,21 @@ class RightTurnArrow extends Reflux.Component {
   componentDidUpdate (prevProps, prevState) {
     if (this.state.stage === false) return false
     if (this.state.container === false) {
+      // container
       this.state.container = new PIXI.Container()
-      this.state.container.id = this.props.id
       this.state.container.visible = false
+      this.state.container.id = this.props.id
       this.state.container.x = this.props.x
       this.state.container.y = this.props.y
+      // background
+      let texture = this.state.resources[this.props.image].texture
+      let sprite = new PIXI.Sprite(texture)
+      sprite.x = 0
+      sprite.y = 0
+      sprite.width = this.state.config.GAME_WIDTH
+      sprite.height = this.state.config.GAME_HEIGHT
+      this.state.container.addChild(sprite)
+      // stage
       this.state.stage.addChild(this.state.container)
     }
   }
@@ -37,16 +45,15 @@ class RightTurnArrow extends Reflux.Component {
   render () {
     if (this.state.container === false) return (null)
     this.state.container.visible = this.state.currentState === 'STATE_FIGHTING'
-    return (
-      <Button visible={!this.state.game.currentTurnPlayer} stage={this.state.container} x={0} y={0} width={20} height={100} />
-    )
+    return (null)
   }
 }
 
-RightTurnArrow.propTypes = {
+Background.propTypes = {
   id: PropTypes.string,
   x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired
+  y: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired
 }
 
-export default RightTurnArrow
+export default Background

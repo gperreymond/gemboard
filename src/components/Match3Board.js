@@ -48,19 +48,32 @@ class StateFightingPvP extends Reflux.Component {
       }, 500)
     }
     this.setBackground = () => {
+      // background
+      let colors = ['0x333333', '0xaaaaaa']
+      let currentColor = 0
       for (let x = 0; x < this.state.config.GAME_TILES; x++) {
         for (let y = 0; y < this.state.config.GAME_TILES; y++) {
-          let random = Math.floor(Math.random() * this.state.config['GAME_BGS_NAMES'].length)
-          let name = this.state.config['GAME_BGS_NAMES'][random]
-          let texture = this.state.resources[name].texture
-          let sprite = new PIXI.Sprite(texture)
-          sprite.width = 140
-          sprite.height = 140
-          sprite.x = x * 140
-          sprite.y = y * 140
-          this.state.container.addChild(sprite)
+          let graphics = new PIXI.Graphics()
+          graphics.lineStyle(0, colors[currentColor], 1)
+          graphics.beginFill(colors[currentColor], 0.25)
+          graphics.drawRoundedRect(0, 0, 140, 140, 0)
+          graphics.endFill()
+          graphics.width = 140
+          graphics.height = 140
+          graphics.x = x * 140
+          graphics.y = y * 140
+          this.state.container.addChild(graphics)
+          currentColor === 0 ? currentColor = 1 : currentColor = 0
+          if (y === this.state.config.GAME_TILES - 1) {
+            currentColor === 0 ? currentColor = 1 : currentColor = 0
+          }
         }
       }
+      // borders
+      let graphics = new PIXI.Graphics()
+      graphics.lineStyle(8, 0xac7339, 1)
+      graphics.drawRoundedRect(0, 0, this.state.config.GAME_TILES * 140, this.state.config.GAME_TILES * 140, 10)
+      this.state.container.addChild(graphics)
     }
   }
   componentDidMount () {
@@ -94,7 +107,7 @@ class StateFightingPvP extends Reflux.Component {
   render () {
     if (this.state.container === false) return (null)
     if (this.state.game.tiles === false) return (null)
-    this.state.container.visible = this.state.currentState === 'STATE_FIGHTING_PVP'
+    this.state.container.visible = this.state.currentState === 'STATE_FIGHTING'
     return (null)
   }
 }

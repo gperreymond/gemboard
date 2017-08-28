@@ -10,6 +10,7 @@ import Actions from '../GameActions'
 import Loader from './Loader'
 import AppBar from './AppBar'
 import Match3Board from './Match3Board'
+import Background from './Background'
 import LeftTurnArrow from './LeftTurnArrow'
 import RightTurnArrow from './RightTurnArrow'
 
@@ -34,10 +35,11 @@ class GameScene extends Reflux.Component {
       <div id="game-scene">
         <div id="game-canvas">
           <Loader id="loader" x={0} y={0} />
+          <Background id="background" image="zonePiratesBackground" x={0} y={0} />
           <AppBar id="appbar" x={20} y={20} />
           <LeftTurnArrow id="leftarrowturn" x={(250 - 20) / 2} y={20} />
           <RightTurnArrow id="rightarrowturn" x={this.state.config.GAME_WIDTH - (250 - 20) / 2} y={20} />
-          <Match3Board id="match3board" x={(this.state.config.GAME_WIDTH - this.state.config.GAME_TILES * 140) / 2} y={(this.state.config.GAME_HEIGHT - this.state.config.GAME_TILES * 140)} />
+          <Match3Board id="match3board" x={(this.state.config.GAME_WIDTH - this.state.config.GAME_TILES * 140) / 2} y={(this.state.config.GAME_HEIGHT - this.state.config.GAME_TILES * 140) - 10} />
         </div>
       </div>
     )
