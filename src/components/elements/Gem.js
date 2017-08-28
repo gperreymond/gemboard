@@ -50,6 +50,13 @@ class Gem extends Reflux.Component {
       this.state.container.y = this.props.y * 140 + 70
       this.props.stage.addChild(this.state.container)
       // events
+      this.state.container.on('computer_pointerdown', (target) => {
+        Actions.selectGem(this, () => {
+          setTimeout(() => {
+            target.emit('pointerup')
+          }, 350)
+        })
+      })
       this.state.container.on('pointerdown', () => {
         Actions.selectGem(this)
       })

@@ -3,7 +3,7 @@ import Debug from 'debug'
 const PIXI = require('pixi.js')
 const debug = Debug('gemboard-game:actions:onSelectGem')
 
-const handler = (gem, context) => {
+const handler = (gem, callback, context) => {
   debug('selected gem is %s (%s:%s)', gem.props.type, gem.props.x, gem.props.y)
   const action = new PIXI.action.ScaleTo(1.25, 1.25, 0.1)
   const animation = PIXI.actionManager.runAction(gem.state.container, action)
@@ -12,6 +12,7 @@ const handler = (gem, context) => {
     context.setState({
       game: context.state.game
     })
+    if (callback) return callback()
   })
 }
 

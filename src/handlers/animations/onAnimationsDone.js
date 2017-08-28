@@ -54,8 +54,23 @@ const handler = (context) => {
         Actions.findMoves(() => {
           if (context.state.game.currentTurnPlayer === false) {
             debug('----- COMPUTER TURN -----')
-            let move = context.state.game.moves.shift()
-            console.log(move)
+            setTimeout(() => {
+              let move = context.state.game.moves.shift()
+              debug('computer move is %o', move)
+              let match3 = false
+              context.state.stage.children.map(function (child) {
+                if (child.id === 'match3') match3 = child
+              })
+              let gemSource = null
+              let gemTarget = null
+              match3.children.map(function (child) {
+                let x = (child.x - 70) / 140
+                let y = (child.y - 70) / 140
+                if (move.column1 === x && move.row1 === y) gemSource = child
+                if (move.column2 === x && move.row2 === y) gemTarget = child
+              })
+              gemSource.emit('computer_pointerdown', gemTarget)
+            }, 1000)
           } else {
             debug('----- PLAYER TURN -----')
           }
