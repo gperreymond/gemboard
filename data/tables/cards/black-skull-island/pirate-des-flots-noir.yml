@@ -1,0 +1,10 @@
+name: 'Pirate des flots noir'
+rarity: 'commun'
+clan: 'Black skull Island'
+type:
+  - human
+  - rogue
+level: 1
+attack: 2
+life: 3
+armor: 1
