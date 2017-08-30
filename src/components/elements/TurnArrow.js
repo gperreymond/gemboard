@@ -1,17 +1,15 @@
 /* eslint jsx-quotes: ["error", "prefer-double"] */
 
 import PropTypes from 'prop-types'
-import React from 'react'
 import Reflux from 'reflux'
 import Debug from 'debug'
 
-import Store from '../GameStore'
-import Button from './elements/Button'
+import Store from '../../GameStore'
 
-const debug = Debug('gemboard-game:RightTurnArrow')
+const debug = Debug('gemboard-game:LeftTurnArrow')
 const PIXI = require('pixi.js')
 
-class RightTurnArrow extends Reflux.Component {
+class TurnArrow extends Reflux.Component {
   constructor (props) {
     debug('constructor')
     super(props)
@@ -28,6 +26,12 @@ class RightTurnArrow extends Reflux.Component {
       this.state.container.visible = false
       this.state.container.x = this.props.x
       this.state.container.y = this.props.y
+      // circle
+      let graphics = new PIXI.Graphics()
+      graphics.beginFill(0xe6ac00, 1)
+      graphics.lineStyle(4, 0x0b38600, 1)
+      graphics.drawRect(0, 0, 20, 100)
+      this.state.container.addChild(graphics)
       this.state.stage.addChild(this.state.container)
     }
   }
@@ -36,17 +40,16 @@ class RightTurnArrow extends Reflux.Component {
   }
   render () {
     if (this.state.container === false) return (null)
-    this.state.container.visible = this.state.currentState === 'STATE_FIGHTING'
-    return (
-      <Button visible={!this.state.game.currentTurnPlayer} stage={this.state.container} x={0} y={0} width={20} height={100} />
-    )
+    this.state.container.visible = this.props.visible && this.state.currentState === 'STATE_FIGHTING'
+    return (null)
   }
 }
 
-RightTurnArrow.propTypes = {
+TurnArrow.propTypes = {
   id: PropTypes.string,
   x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired
+  y: PropTypes.number.isRequired,
+  visible: PropTypes.bool.isRequired
 }
 
-export default RightTurnArrow
+export default TurnArrow

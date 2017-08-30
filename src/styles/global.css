@@ -1,6 +1,6 @@
 html, body {
   overflow: hidden;
-  background: #303030;
+  background: #101010;
   color: #f0f0f0;
 }
 
@@ -11,7 +11,7 @@ html, body {
 .game-canvas-container canvas {
   margin-top: 50vh;
   transform: translateY(-50%);
-  background: #0c1318;
+  background: #303030;
 }
 
 #game-scene {

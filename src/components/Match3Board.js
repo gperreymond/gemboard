@@ -71,8 +71,8 @@ class StateFightingPvP extends Reflux.Component {
       }
       // borders
       let graphics = new PIXI.Graphics()
-      graphics.lineStyle(8, 0xac7339, 1)
-      graphics.drawRoundedRect(0, 0, this.state.config.GAME_TILES * 140, this.state.config.GAME_TILES * 140, 10)
+      graphics.lineStyle(8, 0x0b38600, 1)
+      graphics.drawRect(0, 0, this.state.config.GAME_TILES * 140, this.state.config.GAME_TILES * 140)
       this.state.container.addChild(graphics)
     }
   }
@@ -93,8 +93,8 @@ class StateFightingPvP extends Reflux.Component {
       this.state.container.y = this.props.y
       // background
       let graphics = new PIXI.Graphics()
-      graphics.beginFill(0x001a33, 0.75)
-      graphics.drawRoundedRect(0, 0, this.state.config.GAME_TILES * 140, this.state.config.GAME_TILES * 140, 0)
+      graphics.beginFill(0x303030, 0.75)
+      graphics.drawRect(0, 0, this.state.config.GAME_TILES * 140, this.state.config.GAME_TILES * 140)
       graphics.endFill()
       this.state.container.addChild(graphics)
       this.state.stage.addChild(this.state.container)
