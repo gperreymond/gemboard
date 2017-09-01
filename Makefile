@@ -1,4 +1,4 @@
-.PHONY: default start start-server install tests publish build
+.PHONY: default start start-server install tests publish build up
 
 default: install
 
@@ -21,3 +21,6 @@ publish:
 
 build:
 	npm run build;
+
+up:
+	docker-compose up -d

@@ -1,5 +1,6 @@
 .nyc_output
 npm-debug.log
+/docker
 /node_modules
 
 .coveralls.yml

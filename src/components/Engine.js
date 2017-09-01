@@ -1,6 +1,6 @@
 import Debug from 'debug'
 
-import 'fpsmeter'
+// import 'fpsmeter'
 const PIXI = require('pixi.js')
 PIXI.utils.skipHello()
 require('pixi-sound')
@@ -28,12 +28,12 @@ class Engine {
   setup () {
     debug('setup')
     // fps meter
-    window.meter = new window.FPSMeter({ theme: 'light' })
+    // window.meter = new window.FPSMeter({ theme: 'light' })
     // call the main animation loop
     this.animate()
   }
   animate () {
-    window.meter.tick()
+    // window.meter.tick()
     requestAnimationFrame(this.animate)
     if (this.renderer) {
       this.renderer.render(this.stage)

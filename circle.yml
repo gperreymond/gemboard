@@ -21,6 +21,6 @@ deployment:
   prod:
     branch: master
     commands:
-      - curl -u abibao:$DOCKER_USER https://cloud.docker.com/api/app/v1/service
+      - curl -u abibao:$DOCKER_CLOUD_API_TOKEN https://cloud.docker.com/api/app/v1/service/
       - docker build -t abibao/abibao-gemsboard-server .
       - docker push docker.io/abibao/abibao-gemsboard-server
