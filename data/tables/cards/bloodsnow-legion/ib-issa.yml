@@ -10,8 +10,8 @@ attack: 2
 life: 2
 armor: 2
 color: fire
-skill: "Explose de 1 à 3 gemmes fire."
+skill: "Explose de [Util.dice(3)] gemmes fire."
 traits:
-  L1: "Au début du jeu, tous vos gobelins gagnent %power points de vie."
-  L2: "Explose une gemme fire sur alignement de 4 ou 5."
-  L3: "Crée %power gemmes fire sur un alignement de 4 ou 5."
+  L1: "Au début du jeu, tous vos gobelins gagnent [%power] points de vie."
+  L2: "Explose [1] gemme fire sur alignement de 4 ou 5."
+  L3: "Crée [%power] gemmes fire sur un alignement de 4 ou 5."

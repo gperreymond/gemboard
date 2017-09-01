@@ -1,4 +1,4 @@
-name: "Coureur"
+name: "Coureur gobelin"
 title: ""
 rarity: commun
 clan: "Bloodsnow Legion"
@@ -10,8 +10,8 @@ attack: 2
 life: 2
 armor: 2
 color: fire_nature
-skill: "Inflige %attack dégâts au premier ennemi."
+skill: "Inflige [%attack] dégâts au premier ennemi."
 traits:
-  L1: "Au début du jeu, tous vos gobelins gagnent %power points de vie."
-  L2: "Ajoute une gemme nature sur alignement de 4 ou 5."
-  L3: "Ajoute une gemme fire sur un alignement de 4 ou 5."
+  L1: "Au début du jeu, tous vos gobelins gagnent [1 + %power / 5] points de vie."
+  L2: "Ajoute [Math.round(%level/5)] gemmes nature sur alignement de 4 ou 5."
+  L3: "Ajoute [Math.round(%level/5)] gemmes fire sur un alignement de 4 ou 5."
