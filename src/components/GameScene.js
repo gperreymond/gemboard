@@ -38,7 +38,7 @@ class GameScene extends Reflux.Component {
           <AppBar id="appbar" x={20} y={20} />
           <TurnArrow id="leftarrowturn" x={(250 - 20) / 2} y={20} visible={this.state.game.currentTurnPlayer} />
           <TurnArrow id="rightarrowturn" x={this.state.config.GAME_WIDTH - (250 - 20) / 2} y={20} visible={!this.state.game.currentTurnPlayer} />
-          <Match3Board id="match3board" x={(this.state.config.GAME_WIDTH - this.state.config.GAME_TILES * 140) / 2} y={(this.state.config.GAME_HEIGHT - this.state.config.GAME_TILES * 140) - 10} />
+          <Match3Board id="match3board" x={(this.state.config.GAME_WIDTH - this.state.config.GAME_TILES * 140) / 2} y={(this.state.config.GAME_HEIGHT - this.state.config.GAME_TILES * 140) - 25} />
         </div>
       </div>
     )

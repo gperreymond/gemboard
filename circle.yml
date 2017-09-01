@@ -17,3 +17,10 @@ test:
     - make install
     - make tests
     - make publish
+deployment:
+  prod:
+    branch: master
+    commands:
+      - docker build -t abibao/abibao-gemsboard-server .
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push docker.io/abibao/abibao-gemsboard-server

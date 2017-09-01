@@ -11,7 +11,7 @@ import Gem from './elements/Gem'
 const debug = Debug('gemboard-game:Match3Board')
 const PIXI = require('pixi.js')
 
-class StateFightingPvP extends Reflux.Component {
+class Match3Board extends Reflux.Component {
   constructor (props) {
     debug('constructor')
     super(props)
@@ -70,10 +70,10 @@ class StateFightingPvP extends Reflux.Component {
         }
       }
       // borders
-      let graphics = new PIXI.Graphics()
-      graphics.lineStyle(8, 0x0b38600, 1)
-      graphics.drawRect(0, 0, this.state.config.GAME_TILES * 140, this.state.config.GAME_TILES * 140)
-      this.state.container.addChild(graphics)
+      let sprite = new PIXI.Sprite(this.state.resources['cadresMatch3'].texture)
+      sprite.x = -20
+      sprite.y = -20
+      this.state.container.addChild(sprite)
     }
   }
   componentDidMount () {
@@ -112,10 +112,10 @@ class StateFightingPvP extends Reflux.Component {
   }
 }
 
-StateFightingPvP.propTypes = {
+Match3Board.propTypes = {
   id: PropTypes.string,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired
 }
 
-export default StateFightingPvP
+export default Match3Board
