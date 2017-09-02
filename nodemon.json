@@ -1,4 +1,4 @@
 {
   "verbose": false,
-  "watch": ["server/**/*.js"]
+  "watch": ["server/**/*.js", "config/**/*.js"]
 }

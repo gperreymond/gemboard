@@ -4,14 +4,14 @@ import PropTypes from 'prop-types'
 import Reflux from 'reflux'
 import Debug from 'debug'
 
-import Actions from '../GameActions'
-import Store from '../GameStore'
-import Gem from './elements/Gem'
+import Actions from '../../GameActions'
+import Store from '../../GameStore'
+import Gem from '../elements/Gem'
 
 const debug = Debug('gemboard-game:Match3Board')
 const PIXI = require('pixi.js')
 
-class Match3Board extends Reflux.Component {
+class Board extends Reflux.Component {
   constructor (props) {
     debug('constructor')
     super(props)
@@ -43,9 +43,12 @@ class Match3Board extends Reflux.Component {
         const animation = PIXI.actionManager.runAction(this.state.match, action)
         animation.on('end', (elapsed) => {
           debug('gems board is ready for playing')
-          debug(this.state.game.tiles)
+          this.setTeams()
         })
       }, 500)
+    }
+    this.setTeams = () => {
+
     }
     this.setBackground = () => {
       // background
@@ -70,9 +73,11 @@ class Match3Board extends Reflux.Component {
         }
       }
       // borders
-      let sprite = new PIXI.Sprite(this.state.resources['cadresMatch3'].texture)
-      sprite.x = -20
-      sprite.y = -20
+      let sprite = new PIXI.Sprite(this.state.resources['bordersMatch3'].texture)
+      sprite.x = -32
+      sprite.y = -34
+      sprite.width = 1185
+      sprite.height = 1185
       this.state.container.addChild(sprite)
     }
   }
@@ -112,10 +117,10 @@ class Match3Board extends Reflux.Component {
   }
 }
 
-Match3Board.propTypes = {
+Board.propTypes = {
   id: PropTypes.string,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired
 }
 
-export default Match3Board
+export default Board

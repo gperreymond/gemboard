@@ -1,6 +1,8 @@
 import Reflux from 'reflux'
 
 const GameActions = Reflux.createActions([
+  'preloadCards',
+  'preloadCampaigns',
   'preloadData',
   'startEngine',
   'updateCurrentTime',

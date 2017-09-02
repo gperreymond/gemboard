@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 import Reflux from 'reflux'
 import Debug from 'debug'
 
-import Store from '../GameStore'
+import Store from '../../GameStore'
 
-const debug = Debug('gemboard-game:Background')
+const debug = Debug('gemboard-game:Match3Background')
 const PIXI = require('pixi.js')
 
 class Background extends Reflux.Component {
@@ -20,7 +20,8 @@ class Background extends Reflux.Component {
   }
   componentDidUpdate (prevProps, prevState) {
     if (this.state.stage === false) return false
-    if (this.state.container === false) {
+    if (this.state.container === false && this.state.fight.campaign !== false) {
+      console.log(this.state.fight.campaign)
       // container
       this.state.container = new PIXI.Container()
       this.state.container.visible = false
@@ -28,7 +29,7 @@ class Background extends Reflux.Component {
       this.state.container.x = this.props.x
       this.state.container.y = this.props.y
       // background
-      let texture = this.state.resources[this.props.image].texture
+      let texture = this.state.resources[this.state.fight.campaign.background].texture
       let sprite = new PIXI.Sprite(texture)
       sprite.x = 0
       sprite.y = 0
@@ -52,8 +53,7 @@ class Background extends Reflux.Component {
 Background.propTypes = {
   id: PropTypes.string,
   x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired
+  y: PropTypes.number.isRequired
 }
 
 export default Background

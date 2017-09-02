@@ -23,4 +23,3 @@ deployment:
     commands:
       - curl -u abibao:$DOCKER_CLOUD_API_TOKEN https://cloud.docker.com/api/app/v1/service/
       - docker build -t abibao/abibao-gemsboard-server .
-      - docker push abibao/abibao-gemsboard-server

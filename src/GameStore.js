@@ -26,9 +26,11 @@ class GameStore extends Reflux.Store {
         GAME_TILES_COLORS: [0x2d4783, 0x990000, 0x369dba, 0x9d5012, 0x71af4a, 0x878c87, 0x953289],
         GAME_TILES_NAMES: ['gemWater', 'gemFire', 'gemAir', 'gemEarth', 'gemNature', 'gemDeath', 'gemMagic'],
         GAME_BGS_NAMES: ['tileBg001', 'tileBg002', 'tileBg003', 'tileBg004'],
-        GAME_WIDTH: (sizeOfTiles * 140) + (2 * 300),
-        GAME_HEIGHT: (sizeOfTiles * 140) + 100
+        GAME_WIDTH: (sizeOfTiles * 140) + (3 * 300),
+        GAME_HEIGHT: (sizeOfTiles * 140) + 200
       },
+      cards: false,
+      campaigns: false,
       resources: false,
       stage: false,
       engine: false,
@@ -49,17 +51,30 @@ class GameStore extends Reflux.Store {
           extraTurn: false,
           consecutiveKills: 1
         }
+      },
+      fight: {
+        campaign: false
       }
     }
     this.listenables = [Actions]
     this.handlers = new Handlers()
+    this.getCampaignById = (id) => {
+      this.state.campaigns.map((campaign) => {
+        if (campaign.id === id) {
+          return campaign
+        }
+      })
+      return false
+    }
   }
 
+  onPreloadCards () { this.handlers.onPreloadCards(this) }
+  onPreloadCampaigns () { this.handlers.onPreloadCampaigns(this) }
   onPreloadData () { this.handlers.onPreloadData(this) }
   onStartEngine () { this.handlers.onStartEngine(this) }
   onUpdateCurrentTime () { this.handlers.onUpdateCurrentTime(this) }
 
-  onCreateLevel (currentState) { this.handlers.onCreateLevel(currentState, this) }
+  onCreateLevel (currentState, campaign) { this.handlers.onCreateLevel(currentState, campaign, this) }
   onResolveClusters () { this.handlers.onResolveClusters(this) }
   onFindClusters (callback = false) { this.handlers.onFindClusters(callback, this) }
   onRemoveClusters (callback = false) { this.handlers.onRemoveClusters(callback, this) }

@@ -1,3 +1,5 @@
+import onPreloadCards from './handlers/onPreloadCards'
+import onPreloadCampaigns from './handlers/onPreloadCampaigns'
 import onPreloadData from './handlers/onPreloadData'
 import onStartEngine from './handlers/onStartEngine'
 import onUpdateCurrentTime from './handlers/onUpdateCurrentTime'
@@ -20,6 +22,8 @@ import onAnimationsDone from './handlers/animations/onAnimationsDone'
 class GameHandlers {
 }
 
+GameHandlers.prototype.onPreloadCards = onPreloadCards
+GameHandlers.prototype.onPreloadCampaigns = onPreloadCampaigns
 GameHandlers.prototype.onPreloadData = onPreloadData
 GameHandlers.prototype.onStartEngine = onStartEngine
 GameHandlers.prototype.onUpdateCurrentTime = onUpdateCurrentTime

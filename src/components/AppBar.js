@@ -20,12 +20,12 @@ class AppBar extends Reflux.Component {
       container: false
     }
     this.store = Store
-    this.handlePvP = this.handlePvP.bind(this)
+    this.handlePlayCampaign = this.handlePlayCampaign.bind(this)
     this.handleGuild = this.handleGuild.bind(this)
   }
-  handlePvP () {
-    debug('handlePvP')
-    Actions.createLevel('STATE_FIGHTING')
+  handlePlayCampaign () {
+    debug('handlePlayCampaign')
+    Actions.createLevel('STATE_FIGHTING', this.state.campaigns.dataProvider[0])
   }
   handleGuild () {
     debug('handleGuild')
@@ -50,7 +50,7 @@ class AppBar extends Reflux.Component {
     this.state.container.visible = this.state.currentState === 'STATE_HOMEPAGE'
     return (
       <div>
-        <Button stage={this.state.container} onClick={this.handlePvP} x={0} y={0} width={140} height={140} />
+        <Button stage={this.state.container} onClick={this.handlePlayCampaign} x={0} y={0} width={140} height={140} />
         <Button stage={this.state.container} onClick={this.handleGuild} x={140 + 20} y={0} width={140} height={140} />
       </div>
     )

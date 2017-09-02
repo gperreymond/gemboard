@@ -1,0 +1,32 @@
+name: ""
+description: ""
+background: "zoneBloodsnowLegion"
+troops:
+  -
+    id: "bloodsnow-legion--coureur"
+    level: 1
+    traits:
+      L1: false
+      L2: false
+      L3: false
+  -
+    id: "bloodsnow-legion--coureur"
+    level: 1
+    traits:
+      L1: false
+      L2: false
+      L3: false
+  -
+    id: "bloodsnow-legion--coureur"
+    level: 1
+    traits:
+      L1: false
+      L2: false
+      L3: false
+  -
+    id: "bloodsnow-legion--coureur"
+    level: 1
+    traits:
+      L1: false
+      L2: false
+      L3: false

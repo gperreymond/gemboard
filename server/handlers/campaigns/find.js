@@ -5,7 +5,7 @@ const YAML = require('yamljs')
 module.exports = {
   auth: false,
   handler (request, reply) {
-    const dirpath = path.resolve(__dirname, '../../../data/tables/cards')
+    const dirpath = path.resolve(__dirname, '../../../data/tables/campaigns')
     const patternPath = dirpath + '/**/*.yml'
     const patternFiles = glob.sync(patternPath, {
       nodir: true,

@@ -19,7 +19,7 @@ class Game extends Reflux.Component {
   componentDidMount () {
     debug('componentDidMount')
     Actions.updateCurrentTime()
-    Actions.preloadData()
+    Actions.preloadCards()
   }
   componentWillUnmount () {
     debug('componentWillUnmount')
