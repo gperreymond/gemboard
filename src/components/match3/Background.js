@@ -37,7 +37,7 @@ class Background extends Reflux.Component {
       sprite.height = this.state.config.GAME_HEIGHT
       this.state.container.addChild(sprite)
       // stage
-      this.state.stage.addChild(this.state.container)
+      this.state.stage.addChildAt(this.state.container, 0)
     }
   }
   componentWillUnmount () {

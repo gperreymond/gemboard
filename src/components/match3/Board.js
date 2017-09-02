@@ -43,7 +43,7 @@ class Board extends Reflux.Component {
         const animation = PIXI.actionManager.runAction(this.state.match, action)
         animation.on('end', (elapsed) => {
           debug('gems board is ready for playing')
-          this.setTeams()
+          console.log(this.state.stage)
         })
       }, 500)
     }
@@ -51,6 +51,7 @@ class Board extends Reflux.Component {
 
     }
     this.setBackground = () => {
+      debug('set background')
       // background
       let colors = ['0x333333', '0xaaaaaa']
       let currentColor = 0
