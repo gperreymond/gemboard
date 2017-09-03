@@ -10,9 +10,12 @@ import Actions from '../GameActions'
 import Loader from './Loader'
 import AppBar from './AppBar'
 
-import Match3TurnArrow from './match3/TurnArrow'
+// import Match3TurnArrow from './match3/TurnArrow'
+// <Match3TurnArrow id="Match3TurnArrowLeft" x={(250 - 20) / 2} y={20} visible={this.state.game.currentTurnPlayer} />
+// <Match3TurnArrow id="Match3TurnArrowRight" x={this.state.config.GAME_WIDTH - (250 - 20) / 2} y={20} visible={!this.state.game.currentTurnPlayer} />
 import Match3Background from './match3/Background'
 import Match3Board from './match3/Board'
+import Match3Player from './match3/Player'
 
 const debug = Debug('gemboard-game:GameScene')
 
@@ -37,8 +40,8 @@ class GameScene extends Reflux.Component {
           <Loader id="Loader" x={0} y={0} />
           <AppBar id="AppBar" x={20} y={20} />
           <Match3Background id="Match3Background" x={0} y={0} />
-          <Match3TurnArrow id="Match3TurnArrowLeft" x={(250 - 20) / 2} y={20} visible={this.state.game.currentTurnPlayer} />
-          <Match3TurnArrow id="Match3TurnArrowRight" x={this.state.config.GAME_WIDTH - (250 - 20) / 2} y={20} visible={!this.state.game.currentTurnPlayer} />
+          <Match3Player id="Match3PlayerLeft" computer={false} x={40} y={(this.state.config.GAME_HEIGHT - this.state.config.GAME_TILES * 140) - 40} />
+          <Match3Player id="Match3PlayerRight" computer x={this.state.config.GAME_WIDTH - 40 - 340} y={(this.state.config.GAME_HEIGHT - this.state.config.GAME_TILES * 140) - 40} />
           <Match3Board id="Match3Board" x={(this.state.config.GAME_WIDTH - this.state.config.GAME_TILES * 140) / 2} y={(this.state.config.GAME_HEIGHT - this.state.config.GAME_TILES * 140) - 40} />
         </div>
       </div>

@@ -59,12 +59,13 @@ class GameStore extends Reflux.Store {
     this.listenables = [Actions]
     this.handlers = new Handlers()
     this.getCampaignById = (id) => {
-      this.state.campaigns.map((campaign) => {
-        if (campaign.id === id) {
-          return campaign
+      let campaign = false
+      this.state.campaigns.map((item) => {
+        if (item.id === id) {
+          campaign = item
         }
       })
-      return false
+      return campaign
     }
   }
 

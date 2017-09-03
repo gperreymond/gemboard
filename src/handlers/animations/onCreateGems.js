@@ -8,7 +8,7 @@ const handler = (context) => {
     game: context.state.game
   })
   let match3 = false
-  context.state.stage.children.map(function (child) {
+  context.state.stage.children.map((child) => {
     if (child.id === 'match3') match3 = child
   })
   for (let col = 0; col < context.state.config.GAME_TILES; col++) {
@@ -17,8 +17,8 @@ const handler = (context) => {
         delete context.state.game.tiles[col][row].inserted
         debug('... tile is %s in (%s:%s)', context.state.game.tiles[col][row].type, context.state.game.tiles[col][row].x, context.state.game.tiles[col][row].y)
         let use = false
-        context.state.game.animations.create.map(function (item) {
-          match3.children.map(function (child) {
+        context.state.game.animations.create.map((item) => {
+          match3.children.map((child) => {
             if (child.visible === false && use === false) {
               use = true
               debug('... create gem %s in (%s:%s)', context.state.game.tiles[col][row].type, col, row)
