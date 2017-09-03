@@ -30,8 +30,8 @@ class Player extends Reflux.Component {
       this.state.container.y = this.props.y
       // background
       let graphics = new PIXI.Graphics()
-      graphics.lineStyle(0, 0xaaaaaa, 1)
-      graphics.beginFill(0xaaaaaa, 0.5)
+      graphics.lineStyle(0, 0x44413a, 1)
+      graphics.beginFill(0x44413a, 0.75)
       graphics.drawRect(0, 0, 340, this.state.config.GAME_TILES * 140)
       graphics.endFill()
       this.state.container.addChild(graphics)

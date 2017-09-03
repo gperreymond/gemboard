@@ -52,13 +52,13 @@ class Board extends Reflux.Component {
     this.setBackground = () => {
       debug('set background')
       // background
-      let colors = ['0x333333', '0xaaaaaa']
+      let colors = ['0xffffff', '0x000000']
       let currentColor = 0
       for (let x = 0; x < this.state.config.GAME_TILES; x++) {
         for (let y = 0; y < this.state.config.GAME_TILES; y++) {
           let graphics = new PIXI.Graphics()
           graphics.lineStyle(0, colors[currentColor], 1)
-          graphics.beginFill(colors[currentColor], 0.25)
+          graphics.beginFill(colors[currentColor], 0.1)
           graphics.drawRect(0, 0, 140, 140)
           graphics.endFill()
           graphics.x = x * 140
@@ -96,7 +96,7 @@ class Board extends Reflux.Component {
       this.state.container.y = this.props.y
       // background
       let graphics = new PIXI.Graphics()
-      graphics.beginFill(0x303030, 0.75)
+      graphics.beginFill(0x44413a, 0.75)
       graphics.drawRect(0, 0, this.state.config.GAME_TILES * 140, this.state.config.GAME_TILES * 140)
       graphics.endFill()
       this.state.container.addChild(graphics)
