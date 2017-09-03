@@ -6,6 +6,30 @@ import Actions from '../../GameActions'
 const PIXI = require('pixi.js')
 const debug = Debug('gemboard-game:actions:onMoveGems')
 
+const enableMoves = (context) => {
+  // disable gems
+  let match3 = false
+  context.state.stage.children.map(function (child) {
+    if (child.id === 'Match3Gems') match3 = child
+  })
+  context.state.game.enableMoves = true
+  match3.children.map(function (child) {
+    child.emit('change_enable')
+  })
+}
+
+const disableMoves = (context) => {
+  // disable gems
+  let match3 = false
+  context.state.stage.children.map(function (child) {
+    if (child.id === 'Match3Gems') match3 = child
+  })
+  context.state.game.enableMoves = false
+  match3.children.map(function (child) {
+    child.emit('change_enable')
+  })
+}
+
 const swap = (context, x1, y1, x2, y2) => {
   let source = clone(context.state.game.tiles[x1][y1])
   let target = clone(context.state.game.tiles[x2][y2])
@@ -18,6 +42,7 @@ const swap = (context, x1, y1, x2, y2) => {
 }
 
 const handler = (gem, context) => {
+  // logic
   if (!context.state.game.selectedGem) return false
   if (context.state.game.selectedGem === false) return false
   if (context.state.game.selectedGem === gem) {
@@ -52,11 +77,13 @@ const handler = (gem, context) => {
     })
   } else {
     debug('swap could be done')
+    disableMoves(context)
     swap(context, x1, y1, x2, y2)
     Actions.findClusters(() => {
       debug('clusters %o', context.state.game.clusters)
       if (context.state.game.clusters.length === 0) {
         debug('move is unauthorized')
+        enableMoves(context)
         swap(context, x2, y2, x1, y1)
         const action = new PIXI.action.ScaleTo(1, 1, 0.1)
         const animation = PIXI.actionManager.runAction(context.state.game.selectedGem.state.container, action)

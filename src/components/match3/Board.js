@@ -26,7 +26,7 @@ class Board extends Reflux.Component {
       this.state.stage.removeChild(this.state.match)
       // create new
       this.state.match = new PIXI.Container()
-      this.state.match.id = 'match3'
+      this.state.match.id = 'Match3Gems'
       this.state.match.x = this.props.x
       this.state.match.y = -2000
       // create tiles
@@ -43,7 +43,6 @@ class Board extends Reflux.Component {
         const animation = PIXI.actionManager.runAction(this.state.match, action)
         animation.on('end', (elapsed) => {
           debug('gems board is ready for playing')
-          console.log(this.state.stage)
         })
       }, 500)
     }
@@ -60,10 +59,8 @@ class Board extends Reflux.Component {
           let graphics = new PIXI.Graphics()
           graphics.lineStyle(0, colors[currentColor], 1)
           graphics.beginFill(colors[currentColor], 0.25)
-          graphics.drawRoundedRect(0, 0, 140, 140, 0)
+          graphics.drawRect(0, 0, 140, 140)
           graphics.endFill()
-          graphics.width = 140
-          graphics.height = 140
           graphics.x = x * 140
           graphics.y = y * 140
           this.state.container.addChild(graphics)

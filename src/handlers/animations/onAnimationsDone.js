@@ -3,8 +3,33 @@ import Debug from 'debug'
 import Actions from '../../GameActions'
 const debug = Debug('gemboard-game:actions:onAnimationsDone')
 
+const enableMoves = (context) => {
+  // disable gems
+  let match3 = false
+  context.state.stage.children.map(function (child) {
+    if (child.id === 'Match3Gems') match3 = child
+  })
+  context.state.game.enableMoves = true
+  match3.children.map(function (child) {
+    child.emit('change_enable')
+  })
+}
+
+const disableMoves = (context) => {
+  // disable gems
+  let match3 = false
+  context.state.stage.children.map(function (child) {
+    if (child.id === 'Match3Gems') match3 = child
+  })
+  context.state.game.enableMoves = false
+  match3.children.map(function (child) {
+    child.emit('change_enable')
+  })
+}
+
 const handler = (context) => {
   debug('animations all done')
+  disableMoves(context)
   context.setState({
     game: context.state.game
   })
@@ -52,19 +77,20 @@ const handler = (context) => {
         context.setState({
           game: context.state.game
         })
+        let match3 = false
+        context.state.stage.children.map(function (child) {
+          if (child.id === 'Match3Gems') match3 = child
+        })
         Actions.findMoves(() => {
           if (context.state.game.currentTurnPlayer === false) {
             debug('----- COMPUTER TURN -----')
             setTimeout(() => {
               let move = context.state.game.moves.shift()
               debug('computer move is %o', move)
-              let match3 = false
-              context.state.stage.children.map(function (child) {
-                if (child.id === 'match3') match3 = child
-              })
               let gemSource = null
               let gemTarget = null
               match3.children.map(function (child) {
+                child.emit('change_enable')
                 let x = (child.x - 70) / 140
                 let y = (child.y - 70) / 140
                 if (move.column1 === x && move.row1 === y) gemSource = child
@@ -74,6 +100,7 @@ const handler = (context) => {
             }, 1000)
           } else {
             debug('----- PLAYER TURN -----')
+            enableMoves(context)
           }
         })
       }

@@ -9,7 +9,7 @@ const handler = (context) => {
   })
   let match3 = false
   context.state.stage.children.map((child) => {
-    if (child.id === 'match3') match3 = child
+    if (child.id === 'Match3Gems') match3 = child
     return child
   })
   context.state.game.animations.move.map((item) => {

@@ -22,7 +22,7 @@ class Gem extends Reflux.Component {
       this.state.container.visible = visible
       this.state.container.width = 140
       this.state.container.height = 140
-      this.state.container.interactive = true
+      this.state.container.interactive = this.store.game.enableMoves
       this.state.container.buttonMode = true
       // background
       let graphics = new PIXI.Graphics()
@@ -50,6 +50,9 @@ class Gem extends Reflux.Component {
       this.state.container.y = this.props.y * 140 + 70
       this.props.stage.addChild(this.state.container)
       // events
+      this.state.container.on('change_enable', () => {
+        this.state.container.interactive = this.store.game.enableMoves
+      })
       this.state.container.on('computer_pointerdown', (target) => {
         Actions.selectGem(this, () => {
           setTimeout(() => {

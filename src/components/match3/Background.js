@@ -21,7 +21,6 @@ class Background extends Reflux.Component {
   componentDidUpdate (prevProps, prevState) {
     if (this.state.stage === false) return false
     if (this.state.container === false && this.state.fight.campaign !== false) {
-      console.log(this.state.fight.campaign)
       // container
       this.state.container = new PIXI.Container()
       this.state.container.visible = false

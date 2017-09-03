@@ -16,7 +16,8 @@ class Player extends Reflux.Component {
     debug('constructor')
     super(props)
     this.state = {
-      container: false
+      container: false,
+      arrow: false
     }
     this.store = Store
   }
@@ -30,11 +31,30 @@ class Player extends Reflux.Component {
       // background
       let graphics = new PIXI.Graphics()
       graphics.lineStyle(0, 0xaaaaaa, 1)
-      graphics.beginFill(0xaaaaaa, 0.75)
+      graphics.beginFill(0xaaaaaa, 0.5)
       graphics.drawRect(0, 0, 340, this.state.config.GAME_TILES * 140)
       graphics.endFill()
       this.state.container.addChild(graphics)
+      // borders
+      let sprite = new PIXI.Sprite(this.state.resources['playerMatch3'].texture)
+      sprite.x = 0
+      sprite.y = 0
+      sprite.width = 340
+      sprite.height = 1120
+      this.state.container.addChild(sprite)
+      // arrow
+      this.state.arrow = new PIXI.Sprite(this.state.resources['arrowMatch3'].texture)
+      this.state.arrow.x = (340 - 132) / 2
+      this.state.arrow.y = -1 * (155 / 2)
+      this.state.container.addChild(this.state.arrow)
+      // end
       this.state.stage.addChild(this.state.container)
+    } else {
+      if (this.props.computer) {
+        this.state.arrow.visible = !this.state.game.currentTurnPlayer
+      } else {
+        this.state.arrow.visible = this.state.game.currentTurnPlayer
+      }
     }
   }
   componentDidMount () {

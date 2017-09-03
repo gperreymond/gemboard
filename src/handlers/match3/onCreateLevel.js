@@ -9,6 +9,7 @@ const handler = (currentState, campaign, context) => {
   context.state.game = {
     currentState: false,
     currentTurnPlayer: true,
+    enableMoves: true,
     music: false,
     tiles: [],
     clusters: [],
