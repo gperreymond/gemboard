@@ -2,11 +2,12 @@
 
 import PropTypes from 'prop-types'
 import Reflux from 'reflux'
+import React from 'react'
 import Debug from 'debug'
 
 // import Actions from '../../GameActions'
 import Store from '../../GameStore'
-// import Card from '../elements/Card'
+import Text from '../elements/Text'
 
 const debug = Debug('gemboard-game:Match3Player')
 const PIXI = require('pixi.js')
@@ -68,7 +69,11 @@ class Player extends Reflux.Component {
     if (this.state.container === false) return (null)
     if (this.state.game.tiles === false) return (null)
     this.state.container.visible = this.state.currentState === 'STATE_FIGHTING'
-    return (null)
+    return (
+      <div>
+        <Text id={this.props.id + 'Text'} stage={this.state.container} visible={this.state.arrow.visible} label={this.state.game.currentTurnNumber.toString()} x={this.state.arrow.x + 50} y={this.state.arrow.y + 45} fontSize={60} />
+      </div>
+    )
   }
 }
 

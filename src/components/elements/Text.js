@@ -14,16 +14,20 @@ class Text extends Reflux.Component {
   }
   componentDidUpdate (prevProps, prevState) {
     if (this.state.container === false) {
-      this.state.container = new PIXI.Text(this.props.text, {
+      this.state.container = new PIXI.Text(this.props.label, {
         fill: '0xffffff',
         fontSize: this.props.fontSize
       })
       this.state.container.id = this.props.id
+      this.state.container.visible = false
       this.state.container.x = this.props.x
       this.state.container.y = this.props.y
+      // if (this.props.visible) this.state.container.visible = this.props.visible
       this.props.stage.addChild(this.state.container)
     } else {
-      this.state.container.text = this.props.text
+      // console.log(this.props.id, this.props.visible)
+      this.state.container.text = this.props.label
+      // if (this.props.visible) this.state.container.visible = this.props.visible
     }
   }
   componentWillUnmount () {
@@ -38,7 +42,8 @@ Text.propTypes = {
   id: PropTypes.string,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
-  text: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  visible: PropTypes.bool,
   fontSize: PropTypes.number.isRequired
 }
 

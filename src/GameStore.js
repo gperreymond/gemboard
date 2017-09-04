@@ -37,6 +37,7 @@ class GameStore extends Reflux.Store {
       game: {
         currentState: false,
         currentTurnPlayer: true,
+        currentTurnNumber: 1,
         enableMoves: true,
         music: false,
         tiles: [],

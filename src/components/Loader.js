@@ -36,8 +36,8 @@ class Loader extends Reflux.Component {
     this.state.container.visible = this.state.currentState === 'STATE_INITIALIZE'
     return (
       <div>
-        <Text stage={this.state.container} text={this.state.progress.title} x={10} y={10} fontSize={50} />
-        <Text stage={this.state.container} text={this.state.progress.message} x={10} y={60} fontSize={40} />
+        <Text stage={this.state.container} label={this.state.progress.title} x={10} y={10} fontSize={50} />
+        <Text stage={this.state.container} label={this.state.progress.message} x={10} y={60} fontSize={40} />
       </div>
     )
   }
