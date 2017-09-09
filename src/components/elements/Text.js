@@ -19,7 +19,7 @@ class Text extends Reflux.Component {
         fontSize: this.props.fontSize
       })
       this.state.container.id = this.props.id
-      this.state.container.visible = false
+      this.state.container.visible = true
       this.state.container.x = this.props.x
       this.state.container.y = this.props.y
       // if (this.props.visible) this.state.container.visible = this.props.visible

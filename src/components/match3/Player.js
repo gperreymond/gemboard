@@ -1,13 +1,13 @@
 /* eslint jsx-quotes: ["error", "prefer-double"] */
 
 import PropTypes from 'prop-types'
-import Reflux from 'reflux'
 import React from 'react'
+import Reflux from 'reflux'
 import Debug from 'debug'
 
-// import Actions from '../../GameActions'
+import Actions from '../../GameActions'
 import Store from '../../GameStore'
-import Text from '../elements/Text'
+import Troop from '../elements/Troop'
 
 const debug = Debug('gemboard-game:Match3Player')
 const PIXI = require('pixi.js')
@@ -18,9 +18,16 @@ class Player extends Reflux.Component {
     super(props)
     this.state = {
       container: false,
-      arrow: false
+      arrow: false,
+      arrowLabel: false,
+      troops: false
     }
     this.store = Store
+    Actions.createTroops.listen((e) => {
+      if (this.props.computer === true) {
+        this.state.troops = this.state.fight.campaign.troops
+      }
+    })
   }
   componentDidUpdate (prevProps, prevState) {
     if (this.state.container === false) {
@@ -48,6 +55,16 @@ class Player extends Reflux.Component {
       this.state.arrow.x = (340 - 132) / 2
       this.state.arrow.y = -1 * (155 / 2)
       this.state.container.addChild(this.state.arrow)
+      // arrow label
+      this.state.arrowLabel = new PIXI.Text(this.state.game.currentTurnNumber.toString(), {
+        fill: '0xffffff',
+        fontSize: 60
+      })
+      this.state.arrowLabel.id = this.props.id + 'Label'
+      this.state.arrowLabel.visible = false
+      this.state.arrowLabel.x = 0
+      this.state.arrowLabel.y = this.state.arrow.y + 45
+      this.state.container.addChild(this.state.arrowLabel)
       // end
       this.state.stage.addChild(this.state.container)
     } else {
@@ -56,6 +73,9 @@ class Player extends Reflux.Component {
       } else {
         this.state.arrow.visible = this.state.game.currentTurnPlayer
       }
+      this.state.arrowLabel.visible = this.state.arrow.visible
+      this.state.arrowLabel.text = this.state.game.currentTurnNumber.toString()
+      this.state.arrowLabel.x = this.state.arrow.x + (this.state.arrow.width - this.state.arrowLabel.width) / 2
     }
   }
   componentDidMount () {
@@ -69,11 +89,17 @@ class Player extends Reflux.Component {
     if (this.state.container === false) return (null)
     if (this.state.game.tiles === false) return (null)
     this.state.container.visible = this.state.currentState === 'STATE_FIGHTING'
-    return (
-      <div>
-        <Text id={this.props.id + 'Text'} stage={this.state.container} visible={this.state.arrow.visible} label={this.state.game.currentTurnNumber.toString()} x={this.state.arrow.x + 50} y={this.state.arrow.y + 45} fontSize={60} />
-      </div>
-    )
+    if (this.state.troops !== false) {
+      return (
+        <div>
+          <Troop data={this.state.troops[0]} stage={this.state.container} x={0} y={0} />
+          <Troop data={this.state.troops[1]} stage={this.state.container} x={0} y={250} />
+          <Troop data={this.state.troops[3]} stage={this.state.container} x={0} y={500} />
+          <Troop data={this.state.troops[3]} stage={this.state.container} x={0} y={750} />
+        </div>
+      )
+    }
+    return (null)
   }
 }
 

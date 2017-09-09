@@ -10,9 +10,6 @@ import Actions from '../GameActions'
 import Loader from './Loader'
 import AppBar from './AppBar'
 
-// import Match3TurnArrow from './match3/TurnArrow'
-// <Match3TurnArrow id="Match3TurnArrowLeft" x={(250 - 20) / 2} y={20} visible={this.state.game.currentTurnPlayer} />
-// <Match3TurnArrow id="Match3TurnArrowRight" x={this.state.config.GAME_WIDTH - (250 - 20) / 2} y={20} visible={!this.state.game.currentTurnPlayer} />
 import Match3Background from './match3/Background'
 import Match3Board from './match3/Board'
 import Match3Player from './match3/Player'

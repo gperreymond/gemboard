@@ -15,7 +15,7 @@ const handler = (context) => {
   })
   if (context.state.game.music === false) {
     context.state.game.music = context.state.resources['festival'].sound
-    context.state.game.music.volume = 0.1
+    context.state.game.music.volume = context.state.config.VOLUME
     context.state.game.music.play({loop: true, singleInstance: true})
   }
 }

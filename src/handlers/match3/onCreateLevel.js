@@ -6,11 +6,12 @@ const debug = Debug('gemboard-game:actions:onCreateLevel')
 
 const handler = (currentState, campaign, context) => {
   debug('create a level with random tiles')
+  debug(context.state)
   context.state.game = {
     currentState: false,
     currentTurnPlayer: true,
     currentTurnNumber: 1,
-    enableMoves: true,
+    enableMoves: false,
     music: false,
     tiles: [],
     clusters: [],

@@ -18,6 +18,9 @@ class Background extends Reflux.Component {
     }
     this.store = Store
   }
+  componentDidMount () {
+    debug('componentDidMount')
+  }
   componentDidUpdate (prevProps, prevState) {
     if (this.state.stage === false) return false
     if (this.state.container === false && this.state.fight.campaign !== false) {

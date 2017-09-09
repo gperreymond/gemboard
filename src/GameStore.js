@@ -27,7 +27,8 @@ class GameStore extends Reflux.Store {
         GAME_TILES_NAMES: ['gemWater', 'gemFire', 'gemAir', 'gemEarth', 'gemNature', 'gemDeath', 'gemMagic'],
         GAME_BGS_NAMES: ['tileBg001', 'tileBg002', 'tileBg003', 'tileBg004'],
         GAME_WIDTH: (sizeOfTiles * 140) + (3 * 300),
-        GAME_HEIGHT: (sizeOfTiles * 140) + 200
+        GAME_HEIGHT: (sizeOfTiles * 140) + 200,
+        VOLUME: 0
       },
       cards: false,
       campaigns: false,
@@ -38,7 +39,7 @@ class GameStore extends Reflux.Store {
         currentState: false,
         currentTurnPlayer: true,
         currentTurnNumber: 1,
-        enableMoves: true,
+        enableMoves: false,
         music: false,
         tiles: [],
         clusters: [],
@@ -60,15 +61,6 @@ class GameStore extends Reflux.Store {
     }
     this.listenables = [Actions]
     this.handlers = new Handlers()
-    this.getCampaignById = (id) => {
-      let campaign = false
-      this.state.campaigns.map((item) => {
-        if (item.id === id) {
-          campaign = item
-        }
-      })
-      return campaign
-    }
   }
 
   onPreloadCards () { this.handlers.onPreloadCards(this) }
@@ -84,6 +76,7 @@ class GameStore extends Reflux.Store {
   onShiftTiles (callback = false) { this.handlers.onShiftTiles(callback, this) }
   onFindMoves (callback = false) { this.handlers.onFindMoves(callback, this) }
   onCreateLevelComplete () { this.handlers.onCreateLevelComplete(this) }
+  onCreateTroops () { this.handlers.onCreateTroops(this) }
 
   onSelectGem (gem, callback = false) { this.handlers.onSelectGem(gem, callback, this) }
   onMoveGems (gem) { this.handlers.onMoveGems(gem, this) }

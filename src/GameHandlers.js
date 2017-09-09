@@ -11,6 +11,7 @@ import onRemoveClusters from './handlers/match3/onRemoveClusters'
 import onShiftTiles from './handlers/match3/onShiftTiles'
 import onFindMoves from './handlers/match3/onFindMoves'
 import onCreateLevelComplete from './handlers/match3/onCreateLevelComplete'
+import onCreateTroops from './handlers/match3/onCreateTroops'
 
 import onSelectGem from './handlers/animations/onSelectGem'
 import onMoveGems from './handlers/animations/onMoveGems'
@@ -35,6 +36,7 @@ GameHandlers.prototype.onRemoveClusters = onRemoveClusters
 GameHandlers.prototype.onShiftTiles = onShiftTiles
 GameHandlers.prototype.onFindMoves = onFindMoves
 GameHandlers.prototype.onCreateLevelComplete = onCreateLevelComplete
+GameHandlers.prototype.onCreateTroops = onCreateTroops
 
 GameHandlers.prototype.onSelectGem = onSelectGem
 GameHandlers.prototype.onMoveGems = onMoveGems

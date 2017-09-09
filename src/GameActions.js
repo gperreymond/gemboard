@@ -13,6 +13,7 @@ const GameActions = Reflux.createActions([
   'shiftTiles',
   'findMoves',
   'createLevelComplete',
+  'createTroops',
   'selectGem',
   'moveGems',
   'explodeGems',
