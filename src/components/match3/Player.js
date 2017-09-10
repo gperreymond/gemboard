@@ -93,9 +93,9 @@ class Player extends Reflux.Component {
       return (
         <div>
           <Troop data={this.state.troops[0]} stage={this.state.container} x={0} y={0} />
-          <Troop data={this.state.troops[1]} stage={this.state.container} x={0} y={250} />
-          <Troop data={this.state.troops[3]} stage={this.state.container} x={0} y={500} />
-          <Troop data={this.state.troops[3]} stage={this.state.container} x={0} y={750} />
+          <Troop data={this.state.troops[1]} stage={this.state.container} x={0} y={280} />
+          <Troop data={this.state.troops[2]} stage={this.state.container} x={0} y={560} />
+          <Troop data={this.state.troops[3]} stage={this.state.container} x={0} y={840} />
         </div>
       )
     }
