@@ -2,5 +2,6 @@
 .nyc_output
 build
 coverage
-docker
 node_modules
+src
+test

@@ -54,7 +54,7 @@
     "fpsmeter": "0.3.1",
     "jsdom": "11.2.0",
     "jsdom-global": "3.0.2",
-    "mocha": "3.5.1",
+    "mocha": "3.5.2",
     "mocha-standard": "1.0.0",
     "nconf": "0.8.4",
     "nodemon": "1.12.0",

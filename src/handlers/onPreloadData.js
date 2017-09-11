@@ -20,7 +20,7 @@ const handler = (context) => {
       'Content-Type': 'application/json'
     },
     json: true,
-    uri: window.location.origin + '/api/resources'
+    uri: process.env.REACT_APP_GEMBOARD_SERVER_URI + '/api/resources'
   }, (error, response, data) => {
     if (error) {
       debug('error %o', error)
