@@ -16,13 +16,14 @@ class Gem extends Reflux.Component {
     this.store = Store.singleton.state
   }
   componentDidUpdate (visible = true) {
+    console.log('componentDidUpdate')
     if (this.state.container === false) {
       // container
       this.state.container = new PIXI.Container()
       this.state.container.visible = visible
       this.state.container.width = 140
       this.state.container.height = 140
-      this.state.container.interactive = this.store.game.enableMoves
+      this.state.container.interactive = true
       this.state.container.buttonMode = true
       // background
       let graphics = new PIXI.Graphics()

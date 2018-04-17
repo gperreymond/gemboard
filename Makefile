@@ -1,26 +1,23 @@
-.PHONY: default start start-server install tests publish build up
+.PHONY: default start start-server install tests publish build
 
 default: install
 
 start:
-	npm start;
+	yarn start;
 
 start-server:
-	npm run start:server;
+	yarn start:server;
 
 install:
-	npm install;
+	yarn;
 
 tests:
 	rm -rf coverage;
-	npm run test:standard;
-	npm run test:coverage;
+	yarn test:standard;
+	yarn test:coverage;
 
 publish:
-	npm run coverage:publish;
+	yarn coverage:publish;
 
 build:
-	npm run build;
-
-up:
-	docker-compose up -d
+	yarn build;

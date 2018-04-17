@@ -21,7 +21,4 @@ deployment:
   prod:
     branch: master
     commands:
-      - docker build -t abibao/abibao-gemboard-server .
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push docker.io/abibao/abibao-gemboard-server
-      - curl http://$JENKINS_USER:$JENKINS_TOKEN@jenkins.internal.abibao.com/job/Gemboard/build?token=$JENKINS_PIPELINE_TOKEN
+      - docker build -t gperreymond/gemboard .

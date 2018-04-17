@@ -1,4 +1,5 @@
 .nyc_output
+yarn.lock
 npm-debug.log
 /docker
 /node_modules

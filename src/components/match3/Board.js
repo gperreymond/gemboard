@@ -43,7 +43,6 @@ class Board extends Reflux.Component {
         const animation = PIXI.actionManager.runAction(this.state.match, action)
         animation.on('end', (elapsed) => {
           debug('gems board is ready for playing')
-          Actions.createTroops()
         })
       }, 500)
     }
